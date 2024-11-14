@@ -22,6 +22,11 @@ class City extends Phaser.Scene
 
         this.load.spritesheet('water_attack','water_attack.png',
             {frameWidth:16,frameHeight:16});
+
+        this.load.spritesheet('tackle_attack','tackle.png',
+            {frameWidth:32,frameHeight:32});
+        
+        this.load.image('roar_attack','roar.png')
     }
 
     create()
@@ -42,6 +47,8 @@ class City extends Phaser.Scene
 
         this.air = this.add.sprite(81, 100,'air_attack');
         this.water = this.add.sprite(97, 100,'water_attack');
+        this.tackle = this.add.sprite(129, 100,'tackle_attack');
+        this.roar = this.add.sprite(161,100,'roar_attack');
 
         this.LoadAnimations();
     }
@@ -106,11 +113,21 @@ class City extends Phaser.Scene
                     repeat:-1
                 }
                 );
+            this.anims.create(
+                {
+                    key: 'tackleAttack',
+                    frames: this.anims.generateFrameNumbers('tackle_attack', 
+                        {start:0, end:3}), 
+                    frameRate: 10,
+                    repeat:-1
+                }
+                );
         }
 
     update()
     { 
         this.air.anims.play('airCut',true);    
-        this.water.anims.play('waterAttack',true);          
+        this.water.anims.play('waterAttack',true);
+        this.tackle.anims.play('tackleAttack',true);                  
     }
 }
