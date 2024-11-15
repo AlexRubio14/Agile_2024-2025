@@ -22,6 +22,9 @@ class City extends Phaser.Scene
 
         this.load.spritesheet('water_attack','water_attack.png',
             {frameWidth:16,frameHeight:16});
+
+        this.load.setPath('assets/audio');
+        this.load.audio('newBarkTown','NewBarkTown.wav');
     }
 
     create()
@@ -44,6 +47,8 @@ class City extends Phaser.Scene
         this.water = this.add.sprite(97, 100,'water_attack');
 
         this.LoadAnimations();
+        this.loadSounds();
+        this.newBarkTown.play();
     }
 
         LoadAnimations()
@@ -113,4 +118,13 @@ class City extends Phaser.Scene
         this.air.anims.play('airCut',true);    
         this.water.anims.play('waterAttack',true);          
     }
+
+    loadSounds()
+    {
+        this.newBarkTown = this.sound.add('newBarkTown');
+    }
 }
+
+
+
+
