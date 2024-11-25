@@ -1,10 +1,24 @@
 var gamePrefs=
 {
-    gameWidth:336,
-    gameHeight:304,
+    gameWidth:256,
+    gameHeight:208,
+    PLAYER_SPEED:200,
+
+    playerHouseF1Width:128, 
+    playerHouseF1Height:96, 
+    playerHouseF0Width:160, 
+    playerHouseF0Height:128, 
     level1Width:320, 
     level1Height:288, 
-    PLAYER_SPEED:200,
+    labWidth:160, 
+    labHeight:192, 
+    elmHouseWidth:128, 
+    elmHouseHeight:128, 
+    npcHouseWidth:128, 
+    npcHouseHeight:128, 
+    routeWidth:960, 
+    routeHeight:288, 
+
 
     TACKLE_NAME: "TACKLE",
     TACKLE_CATEGORY: "PHYSICAL",
@@ -61,7 +75,7 @@ var config =
     type: Phaser.AUTO,
     width: gamePrefs.gameWidth,
     height: gamePrefs.gameHeight,
-    scene:[City], 
+    scene: [PlayerRoom,PlayerHouse, City, Laboratory, ElmHouse, Route, NpcHouse],
     render:
     {
         pixelArt:true

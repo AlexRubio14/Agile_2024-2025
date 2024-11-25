@@ -8,14 +8,73 @@ class player extends Phaser.GameObjects.Sprite
         this.player = this;
         this.scene = _scene;
         this.cursors = this.scene.input.keyboard.createCursorKeys();
+        this.setColliders();
 
         this.currentDirection = 0;
+        this.LoadAnimations();
     }
 
     preUpdate(time,delta)
     {
         this.PlayerMovement();
         super.preUpdate(time, delta);
+    }
+
+    setColliders()
+    {
+        this.scene.physics.add.collider
+        (
+            this.player,
+            this.scene.extraWall
+        );
+        this.scene.physics.add.collider
+        (
+            this.player,
+            this.scene.wall
+        );
+    }
+
+    LoadAnimations()
+    {
+        this.anims.create(
+            {
+                key: 'walkDown',
+                frames: this.anims.generateFrameNumbers('player_Sprite', 
+                    {start:0, end:2}), 
+                frameRate: 10,
+                repeat:-1
+            }
+            );
+        this.anims.create(
+            {
+                key: 'walkLeft',
+                frames: this.anims.generateFrameNumbers('player_Sprite', 
+                    {start:6, end:7}), 
+                frameRate: 10,
+                repeat:-1
+                
+            }
+            );
+        this.anims.create(
+            {
+                key: 'walkUp',
+                frames: this.anims.generateFrameNumbers('player_Sprite', 
+                    {start:3, end:5}), 
+                frameRate: 10,
+                repeat:-1
+                
+            }
+            );
+        this.anims.create(
+            {
+                key: 'walkRight',
+                frames: this.anims.generateFrameNumbers('player_Sprite', 
+                    {start:8, end:9}), 
+                frameRate: 10,
+                repeat:-1
+                
+            }
+            );
     }
 
     PlayerMovement()
