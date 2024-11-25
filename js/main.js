@@ -10,6 +10,14 @@ var gamePrefs=
     playerHouseF0Height:128, 
     level1Width:320, 
     level1Height:288, 
+    labWidth:160, 
+    labHeight:192, 
+    elmHouseWidth:128, 
+    elmHouseHeight:128, 
+    npcHouseWidth:128, 
+    npcHouseHeight:128, 
+    routeWidth:960, 
+    routeHeight:288, 
 
 
     TACKLE_NAME: "TACKLE",
@@ -67,7 +75,7 @@ var config =
     type: Phaser.AUTO,
     width: gamePrefs.gameWidth,
     height: gamePrefs.gameHeight,
-    scene: [PlayerRoom,PlayerHouse, City],
+    scene: [PlayerRoom,PlayerHouse, City, Laboratory, ElmHouse, Route, NpcHouse],
     render:
     {
         pixelArt:true

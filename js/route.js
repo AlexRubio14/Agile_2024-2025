@@ -1,8 +1,8 @@
-class PlayerHouse extends Phaser.Scene
+class Route extends Phaser.Scene
 {
     constructor()
     {
-        super({key:'playerHouseF0'});
+        super({key:'route'});
     }
 
     init(data) {
@@ -31,58 +31,44 @@ class PlayerHouse extends Phaser.Scene
         this.load.image('CityTiles','CityTiles.png');
 
         this.load.setPath('assets/maps');
-        this.load.tilemapTiledJSON('PlayerHouseF0','PlayerHouseF0.json');
+        this.load.tilemapTiledJSON('route1','route1.json');
     }
 
     CreateMap()
     {
-        this.map = this.add.tilemap('PlayerHouseF0');
+        this.map = this.add.tilemap('route1');
 
         this.map.addTilesetImage('CityTiles');
 
         this.map.createLayer('Floor','CityTiles');
         this.extraWall = this.map.createLayer('ExtraWall','CityTiles');
         this.wall =this.map.createLayer('Wall','CityTiles');
-        this.doorDown =this.map.createLayer('DoorDown','CityTiles');
-        this.doorTop =this.map.createLayer('DoorTop','CityTiles');
+        this.door = this.map.createLayer('Door','CityTiles');
 
         this.map.setCollisionByExclusion(-1,true,true,'Wall'); 
         this.map.setCollisionByExclusion(-1,true,true,'ExtraWall'); 
-        this.map.setCollisionByExclusion(-1, true,true, 'DoorDown');
-        this.map.setCollisionByExclusion(-1, true,true, 'DoorTop');
+        this.map.setCollisionByExclusion(-1, true,true, 'Door');
     }
 
     CreatePlayer()
     {
-        if(this.fromScene == "playerHouseF1")
-            this.player = new player(this, 160, 32)
-        else
-        {
-            this.player = new player(this, 120, 112)
-            this.player.currentDirection = 1
-        }
-        
+        this.player = new player(this, 944, 152)
+        this.player.currentDirection = 2
+
         this.cameras.main.startFollow(this.player).setBounds(8,8,
-            gamePrefs.playerHouseF0Width,gamePrefs.playerHouseF0Height);
+            gamePrefs.routeWidth,gamePrefs.routeHeight);
     }
 
     AddCollisions()
     {
-        this.physics.add.collider(this.player, this.doorDown, () => {
-            this.handleDoorDownCollision();
-        });
-    
-        this.physics.add.collider(this.player, this.doorTop, () => {
-            this.handleDoorTopCollision();
+        this.physics.add.collider(this.player, this.door, () => {
+            this.handleDoorCollision();
         });
     }
 
-    handleDoorDownCollision() {
+    handleDoorCollision() {
         this.scene.start('city', { from: this.scene.key });
     }
 
-    handleDoorTopCollision() {
-        this.scene.start('playerHouseF1', { from: this.scene.key });
-    }
 
 }

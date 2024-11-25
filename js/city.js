@@ -125,6 +125,19 @@ class City extends Phaser.Scene
     {
         if(this.fromScene == "playerHouseF0")
             this.player = new player(this, 224, 104);
+        else if(this.fromScene == "laboratory")
+            this.player = new player(this, 112, 72);
+        else if(this.fromScene == "elmhouse")
+            this.player = new player(this, 64, 208);
+        else if(this.fromScene == "npchouse")
+            this.player = new player(this, 192, 240);
+        else if(this.fromScene == "route")
+        {
+            this.player = new player(this, 24, 152);
+            this.player.currentDirection = 3;
+        }
+
+
 
         this.cameras.main.startFollow(this.player).setBounds(8,8,
             gamePrefs.level1Width,gamePrefs.level1Height);
@@ -135,10 +148,45 @@ class City extends Phaser.Scene
         this.physics.add.collider(this.player, this.playerHouseDoor, () => {
             this.handlePlayerHouseDoorCollision();
         });
+
+        this.physics.add.collider(this.player, this.LabDoor, () => {
+            this.handleLabDoorCollision();
+        });
+
+        this.physics.add.collider(this.player, this.ElmHouseDoor, () => {
+            this.handleElmHouseDoorCollision();
+        });
+
+        this.physics.add.collider(this.player, this.Route1Door, () => {
+            this.handleRouteDoorCollision();
+        });
+        this.physics.add.collider(this.player, this.NPCHouseDoor, () => {
+            this.handleNPCDoorCollision();
+        });
     }
 
     handlePlayerHouseDoorCollision() {
         this.scene.start('playerHouseF0', { from: this.scene.key });
+    }
+
+    handleLabDoorCollision()
+    {
+        this.scene.start('laboratory', { from: this.scene.key });
+    }
+
+    handleElmHouseDoorCollision()
+    {
+        this.scene.start('elmhouse', { from: this.scene.key });
+    }
+
+    handleRouteDoorCollision()
+    {
+        this.scene.start('route', { from: this.scene.key });
+    }
+
+    handleNPCDoorCollision()
+    {
+        this.scene.start('npchouse', { from: this.scene.key });
     }
 
     loadSounds()
