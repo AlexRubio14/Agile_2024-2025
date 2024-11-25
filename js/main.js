@@ -1,10 +1,16 @@
 var gamePrefs=
 {
-    gameWidth:336,
-    gameHeight:304,
+    gameWidth:256,
+    gameHeight:208,
+    PLAYER_SPEED:200,
+
+    playerHouseF1Width:128, 
+    playerHouseF1Height:96, 
+    playerHouseF0Width:160, 
+    playerHouseF0Height:128, 
     level1Width:320, 
     level1Height:288, 
-    PLAYER_SPEED:200,
+
 
     TACKLE_NAME: "TACKLE",
     TACKLE_CATEGORY: "PHYSICAL",
@@ -61,7 +67,7 @@ var config =
     type: Phaser.AUTO,
     width: gamePrefs.gameWidth,
     height: gamePrefs.gameHeight,
-    scene:[City], 
+    scene: [PlayerRoom,PlayerHouse, City],
     render:
     {
         pixelArt:true
