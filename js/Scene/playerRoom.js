@@ -1,8 +1,11 @@
-class ElmHouse extends Phaser.Scene
+import {gamePrefs} from '../globals.js';
+import player from '/js/prefabs/player.js';
+
+export default class PlayerRoom extends Phaser.Scene
 {
     constructor()
     {
-        super({key:'elmhouse'});
+        super({key:'playerHouseF1'});
     }
 
     init(data) {
@@ -11,17 +14,17 @@ class ElmHouse extends Phaser.Scene
 
     preload()
     { 
-        this.LoadMap();
-
+        this.LoadMap()
         this.load.setPath('assets/sprites');
         this.load.spritesheet('player_Sprite','player.png',
             {frameWidth:16,frameHeight:16});
     }
-  
+
+    
     create()
     {
-        this.CreateMap();
-        this.CreatePlayer();
+        this.CreateMap()
+        this.CreatePlayer()
         this.AddCollisions()
     }
 
@@ -31,12 +34,12 @@ class ElmHouse extends Phaser.Scene
         this.load.image('CityTiles','CityTiles.png');
 
         this.load.setPath('assets/maps');
-        this.load.tilemapTiledJSON('ElmHouse','ElmHouse.json');
+        this.load.tilemapTiledJSON('player_house_f1','PlayerHouseF1.json');
     }
 
     CreateMap()
     {
-        this.map = this.add.tilemap('ElmHouse');
+        this.map = this.add.tilemap('player_house_f1');
 
         this.map.addTilesetImage('CityTiles');
 
@@ -47,16 +50,18 @@ class ElmHouse extends Phaser.Scene
 
         this.map.setCollisionByExclusion(-1,true,true,'Wall'); 
         this.map.setCollisionByExclusion(-1,true,true,'ExtraWall'); 
-        this.map.setCollisionByExclusion(-1, true,true, 'Door');
+        this.map.setCollisionByExclusion(-1,true,true,'Door'); 
     }
 
     CreatePlayer()
     {
-        this.player = new player(this, 56, 112)
-        this.player.currentDirection = 1
+        if(this.fromScene != "playerHouseF0")
+            this.player = new player(this, 45, 60)
+        else
+            this.player = new player(this, 128, 32)
 
         this.cameras.main.startFollow(this.player).setBounds(8,8,
-            gamePrefs.elmHouseWidth,gamePrefs.elmHouseHeight);
+            gamePrefs.playerHouseF1Width,gamePrefs.playerHouseF1Height);
     }
 
     AddCollisions()
@@ -67,8 +72,7 @@ class ElmHouse extends Phaser.Scene
     }
 
     handleDoorCollision() {
-        this.scene.start('city', { from: this.scene.key });
+        this.scene.start('playerHouseF0', { from: this.scene.key });
     }
-
 
 }

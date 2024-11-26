@@ -1,4 +1,4 @@
-class pokemon extends Phaser.GameObjects.Sprite
+export default class pokemon extends Phaser.GameObjects.Sprite
 {
     constructor(_scene,_spriteTag, is_animated, _name, _type, _base_health, _base_physical_attack, _base_physical_defense, _special_attack, _special_defense, _base_speed, _attacks_array)
     {

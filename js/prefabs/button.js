@@ -1,4 +1,4 @@
-class button extends Phaser.GameObjects.Sprite
+export default class button extends Phaser.GameObjects.Sprite
 {
     constructor(_scene,_id,_text,_posX,_posY,_spriteTag='arrow_sprite')
     { //instanciar el objeto

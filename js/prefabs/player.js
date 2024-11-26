@@ -1,4 +1,6 @@
-class player extends Phaser.GameObjects.Sprite 
+import {gamePrefs} from '../globals.js';
+
+export default class player extends Phaser.GameObjects.Sprite 
 {
     constructor(_scene,_posX,_posY,_spriteTag='player_Sprite')
     { //instanciar el objeto

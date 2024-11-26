@@ -1,4 +1,6 @@
-class combatScene extends Phaser.Scene
+import {gamePrefs} from '../globals.js';
+
+export default class combatScene extends Phaser.Scene
 {
     constructor()
     {

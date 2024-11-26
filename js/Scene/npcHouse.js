@@ -1,4 +1,7 @@
-class NpcHouse extends Phaser.Scene
+import {gamePrefs} from '../globals.js';
+import player from '/js/prefabs/player.js';
+
+export default class NpcHouse extends Phaser.Scene
 {
     constructor()
     {

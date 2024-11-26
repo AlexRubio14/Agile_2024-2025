@@ -1,4 +1,4 @@
-class movement extends Phaser.GameObjects.GameObject
+export default class movement extends Phaser.GameObjects.GameObject
 {
     constructor(_scene, _name, _type, _category, _power, _accuracy, _priority, _pp, _stat_affected = null)
     {
