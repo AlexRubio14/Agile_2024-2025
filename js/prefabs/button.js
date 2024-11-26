@@ -6,7 +6,8 @@ export default class button extends Phaser.GameObjects.Sprite
         
         this.scene = _scene;
         this.scene.add.existing(this);
-
+        this.setScale(5);
+        this.setOrigin(0);
         this.up = null;
         this.down = null;
         this.right = null;
@@ -15,10 +16,10 @@ export default class button extends Phaser.GameObjects.Sprite
         this.id = _id;
 
         this.text = _text;
-        // this.add.text(_posX + 10, _posY, text, {
-        //     font: '16px "PokemonFont"',
-        //     fill: '#ffffff'
-        // });
+        this.scene.add.text(_posX + 40, _posY, this.text, {
+            font: '50px "Pixelify Sans"',
+            fill: '#0'
+        }).setOrigin(0,0.2);
 
         this.setVisible(false);
     }

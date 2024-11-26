@@ -1,10 +1,14 @@
 export default class pokemon extends Phaser.GameObjects.Sprite
 {
-    constructor(_scene,_spriteTag, is_animated, _name, _type, _base_health, _base_physical_attack, _base_physical_defense, _special_attack, _special_defense, _base_speed, _attacks_array)
+    constructor(_scene, _spriteTag, _posX, _posY, is_animated, _name, _type, _base_health, _base_physical_attack, _base_physical_defense, _special_attack, _special_defense, _base_speed, _attacks_array)
     {
-        super(_scene,_spriteTag);
+        super(_scene,_posX,_posY,_spriteTag);
         _scene.add.existing(this);
         this.scene = _scene;
+
+        this.setOrigin(0.5);
+
+        this.level = 8;
 
         this.name = _name;
         this.type = _type;
@@ -19,7 +23,7 @@ export default class pokemon extends Phaser.GameObjects.Sprite
 
         this.attacks_array = _attacks_array;
         
-        this.initStats(this);
+        this.initStats();
 
         if(is_animated)
             this.anims.play(this.name + '_idle', true);
@@ -29,16 +33,16 @@ export default class pokemon extends Phaser.GameObjects.Sprite
     {
         this.health = this.calculateHealth();
         this.current_health = this.health;
-        this.physical_attack = this.calculateStat();
-        this.physical_defense = this.calculateStat();
-        this.special_attack = this.calculateStat();
-        this.special_defense = this.calculateStat();
-        this.speed = this.calculateStat();
+        this.physical_attack = this.calculateStat(this.base_physical_attack);
+        this.physical_defense = this.calculateStat(this.base_physical_defense);
+        this.special_attack = this.calculateStat(this.special_attack);
+        this.special_defense = this.calculateStat(this.special_defense);
+        this.speed = this.calculateStat(this.base_speed);
     }
 
-    calculateHealth(base_stat)
+    calculateHealth()
     {
-        return (2*base_stat/100) * this.level + this.level + 10;
+        return (2*this.base_health/100) * this.level + this.level + 10;
     }
 
     calculateStat(base_stat)
@@ -48,7 +52,7 @@ export default class pokemon extends Phaser.GameObjects.Sprite
 
     selectRandomMovement()
     {
-        this.selected_movement = this.attacks_array[Math.floor(Math.random() * attacks_array.length)]
+        this.selected_movement = this.attacks_array[Math.floor(Math.random() * this.attacks_array.length)]
     }
 
     attack(target_pokemon)
