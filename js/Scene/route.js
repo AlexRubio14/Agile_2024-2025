@@ -14,6 +14,7 @@ export default class Route extends Phaser.Scene
 
     preload()
     { 
+        this.game.scale.setGameSize(gamePrefs.gameWidth / 2, gamePrefs.gameHeight / 2);
         this.LoadMap();
 
         this.load.setPath('assets/sprites');

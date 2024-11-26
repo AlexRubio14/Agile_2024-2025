@@ -1,4 +1,4 @@
-import {scenePrefs} from '../globals.js';
+import {scenePrefs, gamePrefs} from '../globals.js';
 import player from '/js/prefabs/player.js';
 
 export default class PlayerHouse extends Phaser.Scene
@@ -14,6 +14,8 @@ export default class PlayerHouse extends Phaser.Scene
 
     preload()
     { 
+        
+        this.game.scale.setGameSize(gamePrefs.gameWidth / 2, gamePrefs.gameHeight / 2);
         this.LoadMap();
 
         this.load.setPath('assets/sprites');
@@ -58,15 +60,16 @@ export default class PlayerHouse extends Phaser.Scene
     CreatePlayer()
     {
         if(this.fromScene == "playerHouseF1")
-            this.player = new player(this, 160, 32)
+            this.player = new player(this, 160, 32);
         else
         {
-            this.player = new player(this, 120, 112)
-            this.player.currentDirection = 1
+            this.player = new player(this, 120, 112);
+            this.player.currentDirection = 1;
         }
-        
-        this.cameras.main.startFollow(this.player).setBounds(8,8,
-            scenePrefs.playerHouseF0Width,scenePrefs.playerHouseF0Height);
+     
+        this.cameras.main.startFollow(this.player).setBounds(8, 8,
+            scenePrefs.playerHouseF0Width,scenePrefs.playerHouseF0Height);  
+
     }
 
     AddCollisions()

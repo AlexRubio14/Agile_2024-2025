@@ -17,7 +17,7 @@ var config =
     type: Phaser.AUTO,
     width: gamePrefs.gameWidth,
     height: gamePrefs.gameHeight,
-    scene: [combatScene,playerRoom, playerHouse, city, laboratory, elmHouse, route, npcHouse],
+    scene: [playerRoom, playerHouse, city, laboratory, elmHouse, route, npcHouse],
     render:
     {
         pixelArt:true
@@ -33,8 +33,8 @@ var config =
     scale:
     {
         mode:Phaser.Scale.FIT,
-        width:gamePrefs.gameWidth*5,
-        height:gamePrefs.gameHeight*5,
+        width:gamePrefs.gameWidth * 5,
+        height:gamePrefs.gameHeight * 5,
         autoCenter:Phaser.Scale.CENTER_BOTH
     }
 }

@@ -1,4 +1,4 @@
-import {scenePrefs} from '../globals.js';
+import {scenePrefs, gamePrefs} from '../globals.js';
 import player from '/js/prefabs/player.js';
 
 export default class City extends Phaser.Scene
@@ -14,6 +14,7 @@ export default class City extends Phaser.Scene
 
     preload()
     { 
+        this.game.scale.setGameSize(gamePrefs.gameWidth / 2, gamePrefs.gameHeight / 2);
         this.LoadMap();
 
         this.load.setPath('assets/sprites');
@@ -139,10 +140,8 @@ export default class City extends Phaser.Scene
             this.player = new player(this, 24, 152);
             this.player.currentDirection = 3;
         }
-
-
-
-        this.cameras.main.startFollow(this.player).setBounds(8,8,
+     
+        this.cameras.main.startFollow(this.player).setBounds(8, 8,
             scenePrefs.level1Width,scenePrefs.level1Height);
     }
 

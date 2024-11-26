@@ -12,6 +12,7 @@ export default class combatScene extends Phaser.Scene
 
     preload()
     {
+        this.game.scale.setGameSize(gamePrefs.gameWidth * 5, gamePrefs.gameHeight * 5);
         this.cameras.main.setBackgroundColor("f8f8f8");
 
         this.load.setPath('assets/sprites');
