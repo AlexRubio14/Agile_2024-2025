@@ -1,4 +1,4 @@
-import {gamePrefs} from '../globals.js';
+import {scenePrefs} from '../globals.js';
 import player from '/js/prefabs/player.js';
 
 export default class Laboratory extends Phaser.Scene
@@ -59,7 +59,7 @@ export default class Laboratory extends Phaser.Scene
         this.player.currentDirection = 1
 
         this.cameras.main.startFollow(this.player).setBounds(8,8,
-            gamePrefs.labWidth,gamePrefs.labHeight);
+            scenePrefs.labWidth,scenePrefs.labHeight);
     }
 
     AddCollisions()

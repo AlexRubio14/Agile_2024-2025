@@ -1,4 +1,4 @@
-import {gamePrefs} from '../globals.js';
+import {scenePrefs} from '../globals.js';
 import player from '/js/prefabs/player.js';
 
 export default class City extends Phaser.Scene
@@ -143,7 +143,7 @@ export default class City extends Phaser.Scene
 
 
         this.cameras.main.startFollow(this.player).setBounds(8,8,
-            gamePrefs.level1Width,gamePrefs.level1Height);
+            scenePrefs.level1Width,scenePrefs.level1Height);
     }
 
     AddCollisions()

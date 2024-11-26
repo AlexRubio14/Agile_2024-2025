@@ -2,8 +2,11 @@ export const gamePrefs=
 {
     gameWidth:256,
     gameHeight:208,
-    PLAYER_SPEED:200,
+    PLAYER_SPEED:200, 
+};
 
+export const scenePrefs=
+{
     playerHouseF1Width:128, 
     playerHouseF1Height:96, 
     playerHouseF0Width:160, 
@@ -19,8 +22,11 @@ export const gamePrefs=
     routeWidth:960, 
     routeHeight:288,
     combatWidth:160, 
-    combatHeight:144, 
+    combatHeight:144,
+}
 
+export const pokemonPrefs=
+{
     playerName:"RICHARD",
     trainer1Name:"RADEV",
 
@@ -81,4 +87,4 @@ export const gamePrefs=
     HOOTHOOT_SPECIAL_ATTACK: 36,
     HOOTHOOT_SPECIAL_DEFENSE: 56,
     HOOTHOOT_SPEED: 50
-};
+}

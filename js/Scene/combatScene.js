@@ -1,4 +1,4 @@
-import {gamePrefs} from '../globals.js';
+import {pokemonPrefs} from '../globals.js';
 
 export default class combatScene extends Phaser.Scene
 {
@@ -42,21 +42,21 @@ export default class combatScene extends Phaser.Scene
 
     createMovements()
     {
-        this.tackle = new movement(this, gamePrefs.TACKLE_NAME, gamePrefs.TACKLE_TYPE, gamePrefs.TACKLE_CATEGORY,
-            gamePrefs.TACKLE_POWER, gamePrefs.TACKLE_ACCURACY, gamePrefs.TACKLE_PRIORITY, gamePrefs.TACKLE_PP
+        this.tackle = new movement(this, pokemonPrefs.TACKLE_NAME, pokemonPrefs.TACKLE_TYPE, pokemonPrefs.TACKLE_CATEGORY,
+            pokemonPrefs.TACKLE_POWER, pokemonPrefs.TACKLE_ACCURACY, pokemonPrefs.TACKLE_PRIORITY, pokemonPrefs.TACKLE_PP
         );
 
-        this.tail_whip = new movement(this, gamePrefs.TAIL_WHIP_NAME, gamePrefs.TAIL_WHIP_TYPE, gamePrefs.TAIL_WHIP_CATEGORY,
-            gamePrefs.TAIL_WHIP_POWER, gamePrefs.TAIL_WHIP_ACCURACY, gamePrefs.TAIL_WHIP_PRIORITY,
-            gamePrefs.TAIL_WHIP_PP, gamePrefs.TAIL_WHIP_STAT_AFFECTED
+        this.tail_whip = new movement(this, pokemonPrefs.TAIL_WHIP_NAME, pokemonPrefs.TAIL_WHIP_TYPE, pokemonPrefs.TAIL_WHIP_CATEGORY,
+            pokemonPrefs.TAIL_WHIP_POWER, pokemonPrefs.TAIL_WHIP_ACCURACY, pokemonPrefs.TAIL_WHIP_PRIORITY,
+            pokemonPrefs.TAIL_WHIP_PP, pokemonPrefs.TAIL_WHIP_STAT_AFFECTED
         );
 
-        this.water_gun = new movement(this, gamePrefs.WATER_GUN_NAME, gamePrefs.WATER_GUN_TYPE, gamePrefs.WATER_GUN_CATEGORY,
-            gamePrefs.WATER_GUN_POWER, gamePrefs.WATER_GUN_ACCURACY, gamePrefs.WATER_GUN_PRIORITY, gamePrefs.WATER_GUN_PP
+        this.water_gun = new movement(this, pokemonPrefs.WATER_GUN_NAME, pokemonPrefs.WATER_GUN_TYPE, pokemonPrefs.WATER_GUN_CATEGORY,
+            pokemonPrefs.WATER_GUN_POWER, pokemonPrefs.WATER_GUN_ACCURACY, pokemonPrefs.WATER_GUN_PRIORITY, pokemonPrefs.WATER_GUN_PP
         );
 
-        this.wing_attack = new movement(this, gamePrefs.WING_ATTACK_NAME, gamePrefs.WING_ATTACK_TYPE, gamePrefs.WING_ATTACK_CATEGORY,
-            gamePrefs.WING_ATTACK_POWER, gamePrefs.WING_ATTACK_ACCURACY, gamePrefs.WING_ATTACK_PRIORITY, gamePrefs.WING_ATTACK_PP
+        this.wing_attack = new movement(this, pokemonPrefs.WING_ATTACK_NAME, pokemonPrefs.WING_ATTACK_TYPE, pokemonPrefs.WING_ATTACK_CATEGORY,
+            pokemonPrefs.WING_ATTACK_POWER, pokemonPrefs.WING_ATTACK_ACCURACY, pokemonPrefs.WING_ATTACK_PRIORITY, pokemonPrefs.WING_ATTACK_PP
         );
     }
 
@@ -65,8 +65,8 @@ export default class combatScene extends Phaser.Scene
         var totodile_movements = [this.tackle, this.tail_whip, this.water_gun];
 
         this.player_pokemon = new pokemon(this, "totodile", false, "TOTODILE", ["WATER"], 
-            gamePrefs.TOTODILE_HEALTH, gamePrefs.TOTODILE_PHYSICAL_ATTACK, gamePrefs.TOTODILE_PHYSICAL_DEFENSE,
-            gamePrefs.TOTODILE_SPECIAL_ATTACK, gamePrefs.TOTODILE_SPECIAL_DEFENSE, gamePrefs.TOTODILE_SPEED,
+            pokemonPrefs.TOTODILE_HEALTH, pokemonPrefs.TOTODILE_PHYSICAL_ATTACK, pokemonPrefs.TOTODILE_PHYSICAL_DEFENSE,
+            pokemonPrefs.TOTODILE_SPECIAL_ATTACK, pokemonPrefs.TOTODILE_SPECIAL_DEFENSE, pokemonPrefs.TOTODILE_SPEED,
             totodile_movements
         );
     }
@@ -76,8 +76,8 @@ export default class combatScene extends Phaser.Scene
         var hoothoot_movements = [this.tackle, this.tail_whip, this.wing_attack];
 
         this.enemy_pokemon = new pokemon(this, "hoothoot", true, "HOOTHOOT", ["NORMAL", "FLYING"], 
-            gamePrefs.HOOTHOOT_HEALTH, gamePrefs.HOOTHOOT_PHYSICAL_ATTACK, gamePrefs.HOOTHOOT_PHYSICAL_DEFENSE,
-            gamePrefs.HOOTHOOT_SPECIAL_ATTACK, gamePrefs.HOOTHOOT_SPECIAL_DEFENSE, gamePrefs.HOOTHOOT_SPEED,
+            pokemonPrefs.HOOTHOOT_HEALTH, pokemonPrefs.HOOTHOOT_PHYSICAL_ATTACK, pokemonPrefs.HOOTHOOT_PHYSICAL_DEFENSE,
+            pokemonPrefs.HOOTHOOT_SPECIAL_ATTACK, pokemonPrefs.HOOTHOOT_SPECIAL_DEFENSE, pokemonPrefs.HOOTHOOT_SPEED,
             hoothoot_movements
         );
     }
@@ -90,13 +90,13 @@ export default class combatScene extends Phaser.Scene
         this.button3 = null;
 
         if(this.player_pokemon.attacks_array[0] != null)
-            this.button0 = new button(this, 0, this.player_pokemon.attacks_array[0].name, gamePrefs.uiAttack0X, gamePrefs.uiAttack0Y)
+            this.button0 = new button(this, 0, this.player_pokemon.attacks_array[0].name, pokemonPrefs.uiAttack0X, pokemonPrefs.uiAttack0Y)
         if(this.player_pokemon.attacks_array[1] != null)
-            this.button1 = new button(this, 1, this.player_pokemon.attacks_array[1].name, gamePrefs.uiAttack0X, gamePrefs.uiAttack0Y)
+            this.button1 = new button(this, 1, this.player_pokemon.attacks_array[1].name, pokemonPrefs.uiAttack0X, pokemonPrefs.uiAttack0Y)
         if(this.player_pokemon.attacks_array[2] != null)
-            this.button2 = new button(this, 2, this.player_pokemon.attacks_array[2].name, gamePrefs.uiAttack0X, gamePrefs.uiAttack0Y)
+            this.button2 = new button(this, 2, this.player_pokemon.attacks_array[2].name, pokemonPrefs.uiAttack0X, pokemonPrefs.uiAttack0Y)
         if(this.player_pokemon.attacks_array[3] != null)
-            this.button3 = new button(this, 3, this.player_pokemon.attacks_array[3].name, gamePrefs.uiAttack0X, gamePrefs.uiAttack0Y)
+            this.button3 = new button(this, 3, this.player_pokemon.attacks_array[3].name, pokemonPrefs.uiAttack0X, pokemonPrefs.uiAttack0Y)
 
         if(this.button0 != null)
             this.button0.setButtonConnectors(null, this.button2, this.button1, null);
