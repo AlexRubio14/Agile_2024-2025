@@ -17,8 +17,21 @@ var gamePrefs=
     npcHouseWidth:128, 
     npcHouseHeight:128, 
     routeWidth:960, 
-    routeHeight:288, 
+    routeHeight:288,
+    combatWidth:160, 
+    combatHeight:144, 
 
+    playerName:"RICHARD",
+    trainer1Name:"RADEV",
+
+    uiAttack0X: 13,
+    uiAttack0Y: 108,
+    uiAttack1X: 13,
+    uiAttack1Y: 127,
+    uiAttack2X: 87,
+    uiAttack2Y: 108,
+    uiAttack3X: 87,
+    uiAttack3Y: 127,
 
     TACKLE_NAME: "TACKLE",
     TACKLE_CATEGORY: "PHYSICAL",
@@ -75,7 +88,7 @@ var config =
     type: Phaser.AUTO,
     width: gamePrefs.gameWidth,
     height: gamePrefs.gameHeight,
-    scene: [PlayerRoom,PlayerHouse, City, Laboratory, ElmHouse, Route, NpcHouse],
+    scene: [combatScene, PlayerRoom, PlayerHouse, City, Laboratory, ElmHouse, Route, NpcHouse],
     render:
     {
         pixelArt:true
