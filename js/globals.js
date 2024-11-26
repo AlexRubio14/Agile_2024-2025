@@ -21,8 +21,8 @@ export const scenePrefs=
     npcHouseHeight:128, 
     routeWidth:960, 
     routeHeight:288,
-    combatWidth:160, 
-    combatHeight:144,
+    combatWidth:800, 
+    combatHeight:720,
 }
 
 export const pokemonPrefs=
@@ -30,14 +30,37 @@ export const pokemonPrefs=
     playerName:"RICHARD",
     trainer1Name:"RADEV",
 
-    uiAttack0X: 13,
-    uiAttack0Y: 108,
-    uiAttack1X: 13,
-    uiAttack1Y: 127,
-    uiAttack2X: 87,
-    uiAttack2Y: 108,
-    uiAttack3X: 87,
-    uiAttack3Y: 127,
+    playerPokemonPosX: 200,
+    playerPokemonPosY: 360,
+    enemyPokemonPosX: 615,
+    enemyPokemonPosY: 140,
+
+    uiAttack0X: 65,
+    uiAttack0Y: 540,
+    uiAttack1X: 435,
+    uiAttack1Y: 540,
+    uiAttack2X: 65,
+    uiAttack2Y: 635,
+    uiAttack3X: 435,
+    uiAttack3Y: 635,
+
+    uiPlayerNamePosX: 400,
+    uiPlayerNamePosY: 280,
+
+    uiPlayerLevelPosX: 600,
+    uiPlayerLevelPosY: 320,
+
+    uiPlayerCurrentHpPosX: 555,
+    uiPlayerCurrentHpPosY: 400,
+
+    uiPlayerTotalHpPosX: 600,
+    uiPlayerTotalHpPosY: 400,
+
+    uiEnemyNamePosX: 40,
+    uiEnemyNamePosY: 0,
+
+    uiEnemyLevelPosX: 240,
+    uiEnemyLevelPosY: 40,
 
     TACKLE_NAME: "TACKLE",
     TACKLE_CATEGORY: "PHYSICAL",
