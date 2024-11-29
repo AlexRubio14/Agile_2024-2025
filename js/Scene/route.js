@@ -1,4 +1,4 @@
-import {scenePrefs} from '../globals.js';
+import {scenePrefs, gamePrefs} from '../globals.js';
 import player from '/js/prefabs/player.js';
 
 export default class Route extends Phaser.Scene
