@@ -58,12 +58,19 @@ export default class PlayerRoom extends Phaser.Scene
     CreatePlayer()
     {
         if(this.fromScene != "playerHouseF0")
-            this.player = new player(this, 45, 60);
+            this.player = new player(this, 35, 92);
         else
             this.player = new player(this, 128, 32);
      
-        this.cameras.main.startFollow(this.player).setBounds(8, 8,
-            scenePrefs.playerHouseF1Width,scenePrefs.playerHouseF1Height);  
+            const extraSpace = 200;
+            this.cameras.main.setBounds(
+                -extraSpace, 
+                -extraSpace, 
+                this.map.widthInPixels + extraSpace * 2, 
+                this.map.heightInPixels + extraSpace * 2
+            );
+        
+            this.cameras.main.startFollow(this.player, true);
     }
 
     AddCollisions()

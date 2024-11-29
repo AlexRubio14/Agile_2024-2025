@@ -58,9 +58,9 @@ export default class Route extends Phaser.Scene
     {
         this.player = new player(this, 944, 152)
         this.player.currentDirection = 2
-
-        this.cameras.main.startFollow(this.player).setBounds(8,8,
-            scenePrefs.routeWidth,scenePrefs.routeHeight);
+        
+        this.cameras.main.startFollow(this.player).setBounds(8, 8,
+            this.map.widthInPixels,this.map.heightInPixels);
     }
 
     AddCollisions()

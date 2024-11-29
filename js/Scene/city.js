@@ -142,7 +142,7 @@ export default class City extends Phaser.Scene
         }
      
         this.cameras.main.startFollow(this.player).setBounds(8, 8,
-            scenePrefs.level1Width,scenePrefs.level1Height);
+            this.map.widthInPixels,this.map.heightInPixels);
     }
 
     AddCollisions()

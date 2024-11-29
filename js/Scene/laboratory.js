@@ -59,8 +59,15 @@ export default class Laboratory extends Phaser.Scene
         this.player = new player(this, 88, 176)
         this.player.currentDirection = 1
 
-        this.cameras.main.startFollow(this.player).setBounds(8,8,
-            scenePrefs.labWidth,scenePrefs.labHeight);
+        const extraSpace = 200;
+        this.cameras.main.setBounds(
+            -extraSpace, 
+            -extraSpace, 
+            this.map.widthInPixels + extraSpace * 2, 
+            this.map.heightInPixels + extraSpace * 2
+        );
+    
+        this.cameras.main.startFollow(this.player, true);
     }
 
     AddCollisions()

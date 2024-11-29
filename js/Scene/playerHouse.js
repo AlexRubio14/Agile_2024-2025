@@ -67,8 +67,15 @@ export default class PlayerHouse extends Phaser.Scene
             this.player.currentDirection = 1;
         }
      
-        this.cameras.main.startFollow(this.player).setBounds(8, 8,
-            scenePrefs.playerHouseF0Width,scenePrefs.playerHouseF0Height);  
+        const extraSpace = 200;
+        this.cameras.main.setBounds(
+            -extraSpace, 
+            -extraSpace, 
+            this.map.widthInPixels + extraSpace * 2, 
+            this.map.heightInPixels + extraSpace * 2
+        );
+    
+        this.cameras.main.startFollow(this.player, true);
 
     }
 
