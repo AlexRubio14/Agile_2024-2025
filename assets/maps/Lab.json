@@ -150,12 +150,47 @@
          "width":22,
          "x":0,
          "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "id":6,
+         "name":"Objects",
+         "objects":[
+                {
+                 "height":0,
+                 "id":1,
+                 "name":"elm",
+                 "point":true,
+                 "rotation":0,
+                 "type":"npc",
+                 "visible":true,
+                 "width":0,
+                 "x":79.9726589200273,
+                 "y":64.688995215311
+                }, 
+                {
+                 "height":0,
+                 "id":2,
+                 "name":"pokeball",
+                 "point":true,
+                 "rotation":0,
+                 "type":"pokeball",
+                 "visible":true,
+                 "width":0,
+                 "x":131.155160628845,
+                 "y":67.5324675324675
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
         }],
- "nextlayerid":6,
- "nextobjectid":1,
+ "nextlayerid":7,
+ "nextobjectid":3,
  "orientation":"orthogonal",
  "renderorder":"right-down",
- "tiledversion":"1.10.1",
+ "tiledversion":"1.11.0",
  "tileheight":8,
  "tilesets":[
         {

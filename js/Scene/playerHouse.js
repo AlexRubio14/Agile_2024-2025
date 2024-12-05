@@ -23,7 +23,7 @@ export default class PlayerHouse extends Phaser.Scene
         this.load.spritesheet('player_Sprite','player.png',
             {frameWidth:16,frameHeight:16});
 
-        this.load.spritesheet('npc_Sprite', 'mother.png',
+        this.load.spritesheet('mother_Sprite', 'mother.png',
              {frameWidth:16,frameHeight:16});
     }
   
@@ -94,7 +94,7 @@ export default class PlayerHouse extends Phaser.Scene
             switch(element.type)
             {
                 case 'npc':
-                    var npc = new NPC(this, element.x, element.y);
+                    var npc = new NPC(this, element.x, element.y, 'mother_Sprite');
                     this.interactives.push(npc);
                 break;
             }

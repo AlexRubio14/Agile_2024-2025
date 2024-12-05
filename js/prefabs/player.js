@@ -1,4 +1,5 @@
 import {gamePrefs} from '../globals.js';
+import Pokeball from './pokeball.js';
 
 export default class player extends Phaser.GameObjects.Sprite 
 {
@@ -14,7 +15,7 @@ export default class player extends Phaser.GameObjects.Sprite
         this.currentDirection = 0;
         this.LoadAnimations();
 
-        const interactionDistance = 8;
+        const interactionDistance = 16;
     }
 
     preUpdate(time,delta)
@@ -157,7 +158,16 @@ export default class player extends Phaser.GameObjects.Sprite
             if(this.scene.interactives != null)
             {
                 for (const interactiveObject of this.scene.interactives){
-                    if (Phaser.Math.Distance.Between(interactiveObject.x, interactiveObject.y, this.player.x, this.player.y) <= 17) {
+                    this.Distance;
+                    if(interactiveObject instanceof Pokeball)
+                    {
+                        this.Distance = 30;
+                    }
+                    else
+                    {
+                        this.Distance = 17;
+                    }
+                    if (Phaser.Math.Distance.Between(interactiveObject.x, interactiveObject.y, this.player.x, this.player.y) <= this.Distance) {
                         interactiveObject.interaction(this.player.currentDirection);
                         break;
                     }

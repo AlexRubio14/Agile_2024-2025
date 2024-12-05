@@ -1,5 +1,7 @@
 import {scenePrefs, gamePrefs} from '../globals.js';
 import player from '/js/prefabs/player.js';
+import NPC from '/js/prefabs/npc.js';
+import Pokeball from '/js/prefabs/pokeball.js';
 
 export default class Laboratory extends Phaser.Scene
 {
@@ -20,13 +22,18 @@ export default class Laboratory extends Phaser.Scene
         this.load.setPath('assets/sprites');
         this.load.spritesheet('player_Sprite','player.png',
             {frameWidth:16,frameHeight:16});
+        this.load.spritesheet('elm_Sprite','elm.png',
+            {frameWidth:16,frameHeight:16});
+        this.load.spritesheet('pokeball_Sprite','pokeball.png',
+            {frameWidth:16,frameHeight:16});
     }
   
     create()
     {
         this.CreateMap();
         this.CreatePlayer();
-        this.AddCollisions()
+        this.AddCollisions();
+        this.CreateNPC();
     }
 
     LoadMap()
@@ -68,6 +75,27 @@ export default class Laboratory extends Phaser.Scene
         );
     
         this.cameras.main.startFollow(this.player, true);
+    }
+
+    CreateNPC()
+    {
+        this.interactives = [];
+
+        this.game_objects = this.map.getObjectLayer('Objects');
+        this.game_objects.objects.forEach(function(element)
+        {
+            switch(element.type)
+            {
+                case 'npc':
+                    var npc = new NPC(this, element.x, element.y, 'elm_Sprite');
+                    this.interactives.push(npc);
+                break;
+                case 'pokeball':
+                    var pokeball = new Pokeball(this, element.x, element.y, 'pokeball_Sprite');
+                    this.interactives.push(pokeball);
+                break;
+            }
+        },this);
     }
 
     AddCollisions()
