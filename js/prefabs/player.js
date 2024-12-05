@@ -11,14 +11,16 @@ export default class player extends Phaser.GameObjects.Sprite
         this.scene = _scene;
         this.cursors = this.scene.input.keyboard.createCursorKeys();
         this.setColliders();
-
         this.currentDirection = 0;
         this.LoadAnimations();
+
+        const interactionDistance = 8;
     }
 
     preUpdate(time,delta)
     {
         this.PlayerMovement();
+        this.PlayerInteraction();
         super.preUpdate(time, delta);
     }
 
@@ -127,6 +129,42 @@ export default class player extends Phaser.GameObjects.Sprite
             this.player.anims.stop().setFrame(6);
         else
             this.player.anims.stop().setFrame(8);
+    }
+
+    PlayerInteraction()
+    {
+        if (Phaser.Input.Keyboard.DownDuration(this.cursors.space, 250))
+        {
+            this.targetX = this.player.x;
+            this.targetY = this.player.y;
+
+            switch(this.player.currentDirection)
+            {
+                case 0:
+                    this.targetY += this.interactionDistance;
+                    break;
+                case 1:
+                    this.targetY -= this.interactionDistance;
+                    break;
+                case 2: 
+                    this.targetX -= this.interactionDistance;
+                    break;
+                case 3:
+                    this.targetX += this.interactionDistance;
+                    break;
+            }
+
+            if(this.scene.interactives != null)
+            {
+                for (const interactiveObject of this.scene.interactives){
+                    if (Phaser.Math.Distance.Between(interactiveObject.x, interactiveObject.y, this.player.x, this.player.y) <= 17) {
+                        interactiveObject.interaction(this.player.currentDirection);
+                        break;
+                    }
+                }
+            }
+
+        }
     }
 
 }

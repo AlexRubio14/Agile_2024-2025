@@ -1,5 +1,6 @@
 import {scenePrefs, gamePrefs} from '../globals.js';
 import player from '/js/prefabs/player.js';
+import NPC from '/js/prefabs/npc.js';
 
 export default class PlayerHouse extends Phaser.Scene
 {
@@ -21,13 +22,17 @@ export default class PlayerHouse extends Phaser.Scene
         this.load.setPath('assets/sprites');
         this.load.spritesheet('player_Sprite','player.png',
             {frameWidth:16,frameHeight:16});
+
+        this.load.spritesheet('npc_Sprite', 'mother.png',
+             {frameWidth:16,frameHeight:16});
     }
   
     create()
     {
         this.CreateMap();
         this.CreatePlayer();
-        this.AddCollisions()
+        this.AddCollisions();
+        this.CreateNPC();
     }
 
     LoadMap()
@@ -77,6 +82,23 @@ export default class PlayerHouse extends Phaser.Scene
     
         this.cameras.main.startFollow(this.player, true);
 
+    }
+
+    CreateNPC()
+    {
+        this.interactives = [];
+
+        this.game_objects = this.map.getObjectLayer('Objects');
+        this.game_objects.objects.forEach(function(element)
+        {
+            switch(element.type)
+            {
+                case 'npc':
+                    var npc = new NPC(this, element.x, element.y);
+                    this.interactives.push(npc);
+                break;
+            }
+        },this);
     }
 
     AddCollisions()
