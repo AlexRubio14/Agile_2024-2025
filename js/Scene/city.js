@@ -1,5 +1,6 @@
 import {scenePrefs, gamePrefs} from '../globals.js';
 import player from '/js/prefabs/player.js';
+import NPC from '/js/prefabs/npc.js';
 
 export default class City extends Phaser.Scene
 {
@@ -19,6 +20,8 @@ export default class City extends Phaser.Scene
 
         this.load.setPath('assets/sprites');
         this.load.spritesheet('player_Sprite','player.png',
+            {frameWidth:16,frameHeight:16});
+        this.load.spritesheet('city_man', 'city_man.png',
             {frameWidth:16,frameHeight:16});
 
         // this.load.spritesheet('air_attack','air_attack.png',
@@ -41,6 +44,7 @@ export default class City extends Phaser.Scene
         this.CreateMap();
         this.CreatePlayer();
         this.AddCollisions();
+        this.CreateNPC();
 
         // this.air = this.add.sprite(81, 100,'air_attack');
         // this.water = this.add.sprite(97, 100,'water_attack');
@@ -143,6 +147,23 @@ export default class City extends Phaser.Scene
      
         this.cameras.main.startFollow(this.player).setBounds(8, 8,
             this.map.widthInPixels,this.map.heightInPixels);
+    }
+
+    CreateNPC()
+    {
+        this.interactives = [];
+
+        this.game_objects = this.map.getObjectLayer('Objects');
+        this.game_objects.objects.forEach(function(element)
+        {
+            switch(element.type)
+            {
+                case 'npc':
+                    var npc = new NPC(this, element.x, element.y, 'city_man');
+                    this.interactives.push(npc);
+                break;
+            }
+        },this);
     }
 
     AddCollisions()
