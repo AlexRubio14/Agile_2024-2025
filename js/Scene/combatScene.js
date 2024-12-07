@@ -29,6 +29,10 @@ export default class combatScene extends Phaser.Scene
     create()
     {
         this.isUIActive = true;
+        this.uiPlayerCurrentHp = null;
+
+        
+
         this.combatBg = this.add.sprite(0,0,'combat_bg').setOrigin(0).setScale(5);
         //crear trainer enemigo
         //crear player
@@ -79,7 +83,7 @@ export default class combatScene extends Phaser.Scene
 
     createHootHoot()
     {
-        var hoothoot_movements = [this.tackle, this.tail_whip, this.wing_attack];
+        var hoothoot_movements = [this.tackle, this.wing_attack];
 
         this.enemy_pokemon = new pokemon(this, "hoothoot", pokemonPrefs.enemyPokemonPosX, pokemonPrefs.enemyPokemonPosY, true, "HOOTHOOT", ["NORMAL", "FLYING"], 
             pokemonPrefs.HOOTHOOT_HEALTH, pokemonPrefs.HOOTHOOT_PHYSICAL_ATTACK, pokemonPrefs.HOOTHOOT_PHYSICAL_DEFENSE,
@@ -95,12 +99,12 @@ export default class combatScene extends Phaser.Scene
             fill: '#0'
         }).setOrigin(0,0);
 
-        this.add.text(pokemonPrefs.uiPlayerLevelPosX, pokemonPrefs.uiPlayerLevelPosY, this.player_pokemon.level, {
+        this.uiPlayerLevel = this.add.text(pokemonPrefs.uiPlayerLevelPosX, pokemonPrefs.uiPlayerLevelPosY, this.player_pokemon.level, {
             font: '45px "Pixelify Sans"',
             fill: '#0'
         }).setOrigin(0,0);
 
-        this.add.text(pokemonPrefs.uiPlayerCurrentHpPosX, pokemonPrefs.uiPlayerCurrentHpPosY, this.player_pokemon.current_health, {
+        this.uiPlayerCurrentHp = this.add.text(pokemonPrefs.uiPlayerCurrentHpPosX, pokemonPrefs.uiPlayerCurrentHpPosY, this.player_pokemon.current_health, {
             font: '45px "Pixelify Sans"',
             fill: '#0'
         }).setOrigin(1,0);
@@ -126,6 +130,7 @@ export default class combatScene extends Phaser.Scene
 
     createUI()
     {
+        //Player Attack Buttons
         this.button0 = null;
         this.button1 = null;
         this.button2 = null;
@@ -151,6 +156,22 @@ export default class combatScene extends Phaser.Scene
 
         this.buttonSelected = this.button0;
         this.buttonSelected.selectButton();
+    }
+
+    deactiveButtons()
+    {
+        if(this.button0) this.button0.setVisible(false);
+        if(this.button1) this.button1.setVisible(false);
+        if(this.button2) this.button2.setVisible(false);
+        if(this.button3) this.button3.setVisible(false);
+    }
+
+    activeButtons()
+    {
+        this.button0.setVisible(true);
+        this.button1.setVisible(true);
+        this.button2.setVisible(true);
+        this.button3.setVisible(true);
     }
 
     loadAnimations()
@@ -220,6 +241,7 @@ export default class combatScene extends Phaser.Scene
     {
         //desactivar UI
         this.isUIActive = false;
+        
         //elegir de manera random el ataque del enemigo
         this.enemy_pokemon.selectRandomMovement();
 
@@ -238,6 +260,7 @@ export default class combatScene extends Phaser.Scene
         {
             if (this.player_pokemon.speed > this.enemy_pokemon.speed)
             {
+
                 this.player_pokemon.attack(this.enemy_pokemon);
                 this.enemy_pokemon.attack(this.player_pokemon);
             }
@@ -260,6 +283,13 @@ export default class combatScene extends Phaser.Scene
                 }
             }
         }
+        this.deactiveButtons();
+        this.UpdateUI();
+    }
+
+    UpdateUI()
+    {
+        this.uiPlayerCurrentHp.text = this.player_pokemon.current_health;
     }
 
 }

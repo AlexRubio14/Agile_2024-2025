@@ -42,7 +42,7 @@ export default class pokemon extends Phaser.GameObjects.Sprite
 
     calculateHealth()
     {
-        return (2*this.base_health/100) * this.level + this.level + 10;
+        return Math.floor((2*this.base_health/100) * this.level + this.level + 10);
     }
 
     calculateStat(base_stat)
@@ -57,7 +57,20 @@ export default class pokemon extends Phaser.GameObjects.Sprite
 
     attack(target_pokemon)
     {
-        if (this.selected_movement == "PHYSICAL" || this.selected_movement == "SPECIAL")
+        console.log(this.name + " " +  this.health);
+        if(this.health == 0)
+            return;
+
+
+
+
+        /// No entra en el if
+
+
+
+
+
+        if (this.selected_movement.type == "PHYSICAL" || this.selected_movement.type == "SPECIAL")
             this.damagingAttack(target_pokemon);
         else
             this.nonDamagingAttack(target_pokemon);
@@ -65,7 +78,8 @@ export default class pokemon extends Phaser.GameObjects.Sprite
 
     damagingAttack(target_pokemon)
     { //gen II formula
-        if  (this.selected_movement == "PHYSICAL")
+        console.log("AAAA")
+        if  (this.selected_movement.type == "PHYSICAL")
             damage = (2 * this.level / 5 + 2) * this.selected_movement.power * (this.physical_attack / target_pokemon.physical_defense) / 50;
         else
             damage = (2 * this.level / 5 + 2) * this.selected_movement.power * (this.special_attack / target_pokemon.special_defense) / 50;
@@ -95,7 +109,9 @@ export default class pokemon extends Phaser.GameObjects.Sprite
 
     receiveDamage(damage)
     {
+        console.log(this.name + " " + this.current_health)
         this.current_health -= damage;
+        console.log(this.name + " " + this.current_health)
         if(current_health <= 0)
         {
             this.current_health = 0;
