@@ -1,6 +1,6 @@
 export default class NPC extends Phaser.GameObjects.Sprite 
 {
-    constructor(_scene,_posX,_posY,_spriteTag)
+    constructor(_scene,_posX,_posY,_spriteTag, _wantsCombat = false)
     { 
         super(_scene,_posX,_posY,_spriteTag);
         _scene.add.existing(this);
@@ -9,6 +9,8 @@ export default class NPC extends Phaser.GameObjects.Sprite
         this.npc = this;
         this.scene = _scene;
         this.setColliders();
+
+        this.wantsCombat = _wantsCombat;
     }
 
     preUpdate(time,delta)
@@ -42,6 +44,11 @@ export default class NPC extends Phaser.GameObjects.Sprite
             case 3:
                 this.npc.setFrame(2);
                 break;
+        }
+
+        if(wantsCombat)
+        {
+            this.scene.start('combatScene');
         }
     }
 }

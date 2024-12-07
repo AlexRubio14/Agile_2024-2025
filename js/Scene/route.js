@@ -77,7 +77,7 @@ export default class Route extends Phaser.Scene
             switch(element.type)
             {
                 case 'npc':
-                    var npc = new NPC(this, element.x, element.y, 'silver_Sprite');
+                    var npc = new NPC(this, element.x, element.y, 'silver_Sprite', true);
                     this.interactives.push(npc);
                 break;
             }
