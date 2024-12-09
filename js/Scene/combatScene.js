@@ -158,22 +158,17 @@ export default class combatScene extends Phaser.Scene
         this.buttonSelected.selectButton();
     }
 
-    deactiveButtons()
+    deactiveButton()
     {
-        if(this.button0) this.button0.setVisible(false);
-        if(this.button1) this.button1.setVisible(false);
-        if(this.button2) this.button2.setVisible(false);
-        if(this.button3) this.button3.setVisible(false);
+        this.buttonSelected.deselectButton();
     }
 
-    activeButtons()
+    activeButton()
     {
-        this.button0.setVisible(true);
-        this.button1.setVisible(true);
-        this.button2.setVisible(true);
-        this.button3.setVisible(true);
+        this.buttonSelected.selectButton();
+        this.isUIActive = true;
     }
-
+ 
     loadAnimations()
     {
         //animacion HOOTHOOT_idle
@@ -283,8 +278,9 @@ export default class combatScene extends Phaser.Scene
                 }
             }
         }
-        this.deactiveButtons();
+        this.deactiveButton();
         this.UpdateUI();
+        this.activeButton();
     }
 
     UpdateUI()
@@ -292,4 +288,8 @@ export default class combatScene extends Phaser.Scene
         this.uiPlayerCurrentHp.text = this.player_pokemon.current_health;
     }
 
+    returnToWorld()
+    {
+        this.scene.start('city', { from: this.scene.key });
+    }
 }
