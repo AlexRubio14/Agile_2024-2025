@@ -2,6 +2,8 @@ import {gamePrefs, pokemonPrefs} from '../globals.js';
 import movement from '/js/prefabs/movement.js';
 import pokemon from '/js/prefabs/pokemon.js';
 import button from '/js/prefabs/button.js';
+import ValueBar from '../prefabs/healthBar.js';
+import healthBar from '../prefabs/healthBar.js';
 
 export default class combatScene extends Phaser.Scene
 {
@@ -23,7 +25,6 @@ export default class combatScene extends Phaser.Scene
         this.load.image('totodile','combat_totodile.png');
         this.load.spritesheet('hoothoot','combat_hoothoot.png',
         {frameWidth:276,frameHeight:276});
-
     }
 
     create()
@@ -48,6 +49,24 @@ export default class combatScene extends Phaser.Scene
         this.loadAnimations();
 
         this.cursors = this.input.keyboard.createCursorKeys();
+
+        this.enemyBar = new healthBar(this, 160,97.5,240,12,100);
+        this.playerBar = new healthBar(this, 480, 378, 240,12,100);
+        
+    }
+
+    drawBar() {
+        // Clear the previous graphics
+        this.bar.clear();
+
+        // Draw the background (empty bar)
+        this.bar.fillStyle(0x808080); // Gray
+        this.bar.fillRect(50, 50, this.barWidth, this.barHeight);
+
+        // Draw the filled portion (current value)
+        const filledWidth = (this.currentValue / this.maxValue) * this.barWidth;
+        this.bar.fillStyle(0x00ff00); // Green
+        this.bar.fillRect(50, 50, filledWidth, this.barHeight);
     }
 
     createMovements()
@@ -165,8 +184,10 @@ export default class combatScene extends Phaser.Scene
 
     activeButton()
     {
-        this.buttonSelected.selectButton();
-        this.isUIActive = true;
+        this.time.delayedCall(2000, () => {
+            this.buttonSelected.selectButton();
+            this.isUIActive = true;
+        });
     }
  
     loadAnimations()
@@ -224,7 +245,7 @@ export default class combatScene extends Phaser.Scene
                 }
             }
 
-            if(Phaser.Input.Keyboard.DownDuration(this.cursors.space, 250))
+            if(this.cursors.space.isDown && Phaser.Input.Keyboard.DownDuration(this.cursors.space, 250) )
             {
                 this.player_pokemon.selected_movement = this.player_pokemon.attacks_array[this.buttonSelected.id];
                 this.combat();
@@ -242,17 +263,17 @@ export default class combatScene extends Phaser.Scene
 
         //comprobar si alguno de los dos ataques tiene prioridad
         if (this.player_pokemon.selected_movement.priority > this.enemy_pokemon.selected_movement.priority)
-        {
+        { //Movimiento del player tiene prioridad
             this.player_pokemon.attack(this.enemy_pokemon);
             this.enemy_pokemon.attack(this.player_pokemon);
         }
         else if (this.player_pokemon.selected_movement.priority < this.enemy_pokemon.selected_movement.priority)
-        {
+        { //Movimiento del enemigo tiene prioridad
             this.enemy_pokemon.attack(this.player_pokemon);
             this.player_pokemon.attack(this.enemy_pokemon);
         }
         else
-        {
+        { // Ninguno de los movimientos tiene prioridad
             if (this.player_pokemon.speed > this.enemy_pokemon.speed)
             {
 
