@@ -8,13 +8,19 @@ export default class NPC extends Phaser.GameObjects.Sprite
         this.body.setImmovable(true);
         this.npc = this;
         this.scene = _scene;
+        this.detectionZone = this.scene.add.zone(this.x, this.y).setSize(25, 25); 
+        this.scene.physics.world.enable(this.detectionZone);  
+        this.detectionZone.body.setImmovable(true);  
+        this.inZone;
         this.setColliders();
-
         this.wantsCombat = _wantsCombat;
     }
 
     preUpdate(time,delta)
     {
+        if (!this.detectionZone.getBounds().contains(this.scene.player.x, this.scene.player.y)) {
+            this.scene.player.isInNpcZone = false;    
+        }
         super.preUpdate(time, delta);
     }
 
@@ -25,6 +31,17 @@ export default class NPC extends Phaser.GameObjects.Sprite
             this.npc,
             this.scene.player
         );
+        this.scene.physics.add.overlap(
+            this.detectionZone,         
+            this.scene.player,        
+            this.handleOverlap,         
+            null,                       
+            this
+        );
+    }
+
+    handleOverlap(detectionZone, player) {
+       this.inZone = true;  
     }
 
     interaction(playerDirection)
@@ -46,7 +63,7 @@ export default class NPC extends Phaser.GameObjects.Sprite
                 break;
         }
 
-        if(wantsCombat)
+        if(this.wantsCombat)
         {
             this.scene.start('combatScene');
         }
