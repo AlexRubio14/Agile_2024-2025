@@ -136,38 +136,12 @@ export default class player extends Phaser.GameObjects.Sprite
     {
         if (Phaser.Input.Keyboard.DownDuration(this.cursors.space, 250))
         {
-            this.targetX = this.player.x;
-            this.targetY = this.player.y;
-
-            switch(this.player.currentDirection)
-            {
-                case 0:
-                    this.targetY += this.interactionDistance;
-                    break;
-                case 1:
-                    this.targetY -= this.interactionDistance;
-                    break;
-                case 2: 
-                    this.targetX -= this.interactionDistance;
-                    break;
-                case 3:
-                    this.targetX += this.interactionDistance;
-                    break;
-            }
 
             if(this.scene.interactives != null)
             {
                 for (const interactiveObject of this.scene.interactives){
-                    this.Distance;
-                    if(interactiveObject instanceof Pokeball)
+                    if(interactiveObject.inZone)
                     {
-                        this.Distance = 30;
-                    }
-                    else
-                    {
-                        this.Distance = 17;
-                    }
-                    if (Phaser.Math.Distance.Between(interactiveObject.x, interactiveObject.y, this.player.x, this.player.y) <= this.Distance) {
                         interactiveObject.interaction(this.player.currentDirection);
                         break;
                     }
