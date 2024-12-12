@@ -286,19 +286,18 @@ export default class combatScene extends Phaser.Scene
     enemyAttackFirst()
     {
         this.enemy_pokemon.attack(this.player_pokemon);
-        this.enemyBar.decreaseHealthTo(this.enemy_pokemon.current_health, this.enemy_pokemon.health, () => {
-            this.player_pokemon.attack(this.enemy_pokemon);
-            this.playerBar.decreaseHealthTo(this.player_pokemon.current_health, this.player_pokemon.health);
-        });
+        this.playerBar.decreaseHealthTo(this.player_pokemon.current_health, this.player_pokemon.health);
+        this.player_pokemon.attack(this.enemy_pokemon);
+        this.enemyBar.decreaseHealthTo(this.enemy_pokemon.current_health, this.enemy_pokemon.health);
+
     }
 
     playerAttackFirst()
     {
         this.player_pokemon.attack(this.enemy_pokemon);
-        this.playerBar.decreaseHealthTo(this.player_pokemon.current_health, this.player_pokemon.health, () => {
-            this.enemy_pokemon.attack(this.player_pokemon);
-            this.enemyBar.decreaseHealthTo(this.enemy_pokemon.current_health, this.enemy_pokemon.health);
-        });
+        this.playerBar.decreaseHealthTo(this.player_pokemon.current_health, this.player_pokemon.health);
+        this.enemy_pokemon.attack(this.player_pokemon);
+        this.enemyBar.decreaseHealthTo(this.enemy_pokemon.current_health, this.enemy_pokemon.health);
     }
 
     endTurn()
