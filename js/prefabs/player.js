@@ -136,14 +136,31 @@ export default class player extends Phaser.GameObjects.Sprite
     {
         if (Phaser.Input.Keyboard.DownDuration(this.cursors.space, 250))
         {
-
             if(this.scene.interactives != null)
             {
                 for (const interactiveObject of this.scene.interactives){
                     if(interactiveObject.inZone)
                     {
+                    const playerX = this.player.x;
+                    const playerY = this.player.y;
+                    const npcX = interactiveObject.x;
+                    const npcY = interactiveObject.y;
+
+                    const deltaX = npcX - playerX;
+                    const deltaY = npcY - playerY;
+
+                    let canInteract = false;
+                    if ((this.currentDirection === 0 && deltaY > 0 && Math.abs(deltaX) < Math.abs(deltaY)) || 
+                    (this.currentDirection === 1 && deltaY < 0 && Math.abs(deltaX) < Math.abs(deltaY)) ||
+                    (this.currentDirection === 2 && deltaX < 0 && Math.abs(deltaX) > Math.abs(deltaY)) ||
+                    (this.currentDirection === 3 && deltaX > 0 && Math.abs(deltaX) > Math.abs(deltaY))) {
+                        canInteract = true;
+                    }
+
+                    if (canInteract) {
                         interactiveObject.interaction(this.player.currentDirection);
                         break;
+                    }
                     }
                 }
             }

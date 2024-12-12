@@ -19,7 +19,7 @@ export default class NPC extends Phaser.GameObjects.Sprite
     preUpdate(time,delta)
     {
         if (!this.detectionZone.getBounds().contains(this.scene.player.x, this.scene.player.y)) {
-            this.scene.player.isInNpcZone = false;    
+            this.inZone = false;   
         }
         super.preUpdate(time, delta);
     }
