@@ -34,6 +34,36 @@ export default class healthBar
         this.barGraphics.fillRect(this.x, this.y, filledWidth, this.height);
     }
 
+    // Updates the bar width instantly to match the current health
+    updateHealth(newHealth, maxHealth) {
+        this.currentValue = (newHealth / maxHealth) * this.maxValue;
+        this.draw();
+    }
+
+    decreaseHealthTo(newHealth, maxHealth, duration = 1000) {
+        // Clamp the new health value to valid range
+        newHealth = Phaser.Math.Clamp(newHealth, 0, maxHealth);
+    
+        // Calculate the target health percentage
+        const targetValue = (newHealth / maxHealth) * this.maxValue;
+    
+        // Animate the currentValue property
+        this.scene.tweens.add({
+            targets: this,
+            currentValue: targetValue, // Interpolates currentValue
+            duration: duration,
+            ease: 'Linear',
+            onUpdate: () => {
+                this.draw(); // Redraw the bar with updated currentValue
+            },
+            onComplete: () => {
+                if (typeof onComplete === 'function') {
+                    onComplete(); // Call the callback function if provided
+                }
+            }
+        });
+    }
+
     setValue(newValue) {
         // Update the current value and redraw the bar
         this.currentValue = Phaser.Math.Clamp(newValue, 0, this.maxValue);

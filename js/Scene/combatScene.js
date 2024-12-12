@@ -55,19 +55,7 @@ export default class combatScene extends Phaser.Scene
         
     }
 
-    drawBar() {
-        // Clear the previous graphics
-        this.bar.clear();
-
-        // Draw the background (empty bar)
-        this.bar.fillStyle(0x808080); // Gray
-        this.bar.fillRect(50, 50, this.barWidth, this.barHeight);
-
-        // Draw the filled portion (current value)
-        const filledWidth = (this.currentValue / this.maxValue) * this.barWidth;
-        this.bar.fillStyle(0x00ff00); // Green
-        this.bar.fillRect(50, 50, filledWidth, this.barHeight);
-    }
+   
 
     createMovements()
     {
@@ -264,47 +252,63 @@ export default class combatScene extends Phaser.Scene
         //comprobar si alguno de los dos ataques tiene prioridad
         if (this.player_pokemon.selected_movement.priority > this.enemy_pokemon.selected_movement.priority)
         { //Movimiento del player tiene prioridad
-            this.player_pokemon.attack(this.enemy_pokemon);
-            this.enemy_pokemon.attack(this.player_pokemon);
+            this.playerAttackFirst();
         }
         else if (this.player_pokemon.selected_movement.priority < this.enemy_pokemon.selected_movement.priority)
         { //Movimiento del enemigo tiene prioridad
-            this.enemy_pokemon.attack(this.player_pokemon);
-            this.player_pokemon.attack(this.enemy_pokemon);
+            this.enemyAttackFirst();
         }
         else
         { // Ninguno de los movimientos tiene prioridad
             if (this.player_pokemon.speed > this.enemy_pokemon.speed)
             {
-
-                this.player_pokemon.attack(this.enemy_pokemon);
-                this.enemy_pokemon.attack(this.player_pokemon);
+                this.playerAttackFirst();
             }
             else if (this.player_pokemon.speed < this.enemy_pokemon.speed)
             {
-                this.enemy_pokemon.attack(this.player_pokemon);
-                this.player_pokemon.attack(this.enemy_pokemon);
+                this.enemyAttackFirst();
             }
             else
             { //speed tie
                 if(Math.round(Math.random()) == 0)
                 {
-                    this.player_pokemon.attack(this.enemy_pokemon);
-                    this.enemy_pokemon.attack(this.player_pokemon);
+                    this.playerAttackFirst();
                 }
                 else
                 {
-                    this.enemy_pokemon.attack(this.player_pokemon);
-                    this.player_pokemon.attack(this.enemy_pokemon);
+                    this.enemyAttackFirst();
                 }
             }
         }
+        this.endTurn();
+    }
+
+    enemyAttackFirst()
+    {
+        this.enemy_pokemon.attack(this.player_pokemon);
+        this.enemyBar.decreaseHealthTo(this.enemy_pokemon.current_health, this.enemy_pokemon.health, () => {
+            this.player_pokemon.attack(this.enemy_pokemon);
+            this.playerBar.decreaseHealthTo(this.player_pokemon.current_health, this.player_pokemon.health);
+        });
+    }
+
+    playerAttackFirst()
+    {
+        this.player_pokemon.attack(this.enemy_pokemon);
+        this.playerBar.decreaseHealthTo(this.player_pokemon.current_health, this.player_pokemon.health, () => {
+            this.enemy_pokemon.attack(this.player_pokemon);
+            this.enemyBar.decreaseHealthTo(this.enemy_pokemon.current_health, this.enemy_pokemon.health);
+        });
+    }
+
+    endTurn()
+    {
         this.deactiveButton();
-        this.UpdateUI();
+        this.updateUI();
         this.activeButton();
     }
 
-    UpdateUI()
+    updateUI()
     {
         this.uiPlayerCurrentHp.text = this.player_pokemon.current_health;
     }
