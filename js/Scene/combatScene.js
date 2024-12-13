@@ -2,6 +2,8 @@ import {gamePrefs, pokemonPrefs} from '../globals.js';
 import movement from '/js/prefabs/movement.js';
 import pokemon from '/js/prefabs/pokemon.js';
 import button from '/js/prefabs/button.js';
+import ValueBar from '../prefabs/healthBar.js';
+import healthBar from '../prefabs/healthBar.js';
 
 export default class combatScene extends Phaser.Scene
 {
@@ -23,12 +25,15 @@ export default class combatScene extends Phaser.Scene
         this.load.image('totodile','combat_totodile.png');
         this.load.spritesheet('hoothoot','combat_hoothoot.png',
         {frameWidth:276,frameHeight:276});
-
     }
 
     create()
     {
         this.isUIActive = true;
+        this.uiPlayerCurrentHp = null;
+
+        
+
         this.combatBg = this.add.sprite(0,0,'combat_bg').setOrigin(0).setScale(5);
         //crear trainer enemigo
         //crear player
@@ -44,7 +49,13 @@ export default class combatScene extends Phaser.Scene
         this.loadAnimations();
 
         this.cursors = this.input.keyboard.createCursorKeys();
+
+        this.enemyBar = new healthBar(this, 160,97.5,240,12,100);
+        this.playerBar = new healthBar(this, 480, 378, 240,12,100);
+        
     }
+
+   
 
     createMovements()
     {
@@ -79,7 +90,7 @@ export default class combatScene extends Phaser.Scene
 
     createHootHoot()
     {
-        var hoothoot_movements = [this.tackle, this.tail_whip, this.wing_attack];
+        var hoothoot_movements = [this.tackle, this.wing_attack];
 
         this.enemy_pokemon = new pokemon(this, "hoothoot", pokemonPrefs.enemyPokemonPosX, pokemonPrefs.enemyPokemonPosY, true, "HOOTHOOT", ["NORMAL", "FLYING"], 
             pokemonPrefs.HOOTHOOT_HEALTH, pokemonPrefs.HOOTHOOT_PHYSICAL_ATTACK, pokemonPrefs.HOOTHOOT_PHYSICAL_DEFENSE,
@@ -95,12 +106,12 @@ export default class combatScene extends Phaser.Scene
             fill: '#0'
         }).setOrigin(0,0);
 
-        this.add.text(pokemonPrefs.uiPlayerLevelPosX, pokemonPrefs.uiPlayerLevelPosY, this.player_pokemon.level, {
+        this.uiPlayerLevel = this.add.text(pokemonPrefs.uiPlayerLevelPosX, pokemonPrefs.uiPlayerLevelPosY, this.player_pokemon.level, {
             font: '45px "Pixelify Sans"',
             fill: '#0'
         }).setOrigin(0,0);
 
-        this.add.text(pokemonPrefs.uiPlayerCurrentHpPosX, pokemonPrefs.uiPlayerCurrentHpPosY, this.player_pokemon.current_health, {
+        this.uiPlayerCurrentHp = this.add.text(pokemonPrefs.uiPlayerCurrentHpPosX, pokemonPrefs.uiPlayerCurrentHpPosY, this.player_pokemon.current_health, {
             font: '45px "Pixelify Sans"',
             fill: '#0'
         }).setOrigin(1,0);
@@ -126,6 +137,7 @@ export default class combatScene extends Phaser.Scene
 
     createUI()
     {
+        //Player Attack Buttons
         this.button0 = null;
         this.button1 = null;
         this.button2 = null;
@@ -153,6 +165,19 @@ export default class combatScene extends Phaser.Scene
         this.buttonSelected.selectButton();
     }
 
+    deactiveButton()
+    {
+        this.buttonSelected.deselectButton();
+    }
+
+    activeButton()
+    {
+
+        this.buttonSelected.selectButton();
+        this.isUIActive = true;
+
+    }
+ 
     loadAnimations()
     {
         //animacion HOOTHOOT_idle
@@ -208,7 +233,7 @@ export default class combatScene extends Phaser.Scene
                 }
             }
 
-            if(Phaser.Input.Keyboard.DownDuration(this.cursors.space, 250))
+            if(this.cursors.space.isDown && Phaser.Input.Keyboard.DownDuration(this.cursors.space, 250) )
             {
                 this.player_pokemon.selected_movement = this.player_pokemon.attacks_array[this.buttonSelected.id];
                 this.combat();
@@ -220,46 +245,86 @@ export default class combatScene extends Phaser.Scene
     {
         //desactivar UI
         this.isUIActive = false;
+        
         //elegir de manera random el ataque del enemigo
         this.enemy_pokemon.selectRandomMovement();
 
         //comprobar si alguno de los dos ataques tiene prioridad
         if (this.player_pokemon.selected_movement.priority > this.enemy_pokemon.selected_movement.priority)
-        {
-            this.player_pokemon.attack(this.enemy_pokemon);
-            this.enemy_pokemon.attack(this.player_pokemon);
+        { //Movimiento del player tiene prioridad
+            this.playerAttackFirst();
         }
         else if (this.player_pokemon.selected_movement.priority < this.enemy_pokemon.selected_movement.priority)
-        {
-            this.enemy_pokemon.attack(this.player_pokemon);
-            this.player_pokemon.attack(this.enemy_pokemon);
+        { //Movimiento del enemigo tiene prioridad
+            this.enemyAttackFirst();
         }
         else
-        {
+        { // Ninguno de los movimientos tiene prioridad
             if (this.player_pokemon.speed > this.enemy_pokemon.speed)
             {
-                this.player_pokemon.attack(this.enemy_pokemon);
-                this.enemy_pokemon.attack(this.player_pokemon);
+                this.playerAttackFirst();
             }
             else if (this.player_pokemon.speed < this.enemy_pokemon.speed)
             {
-                this.enemy_pokemon.attack(this.player_pokemon);
-                this.player_pokemon.attack(this.enemy_pokemon);
+                this.enemyAttackFirst();
             }
             else
             { //speed tie
                 if(Math.round(Math.random()) == 0)
                 {
-                    this.player_pokemon.attack(this.enemy_pokemon);
-                    this.enemy_pokemon.attack(this.player_pokemon);
+                    this.playerAttackFirst();
                 }
                 else
                 {
-                    this.enemy_pokemon.attack(this.player_pokemon);
-                    this.player_pokemon.attack(this.enemy_pokemon);
+                    this.enemyAttackFirst();
                 }
             }
         }
     }
 
+    enemyAttackFirst()
+    {
+        this.deactiveButton();
+
+        this.enemy_pokemon.attack(this.player_pokemon);
+        this.updateUI();
+        this.playerBar.decreaseHealthTo(this.player_pokemon.current_health, this.player_pokemon.health, () => {
+            this.player_pokemon.attack(this.enemy_pokemon);
+            this.enemyBar.decreaseHealthTo(this.enemy_pokemon.current_health, this.enemy_pokemon.health, () => {
+                this.activeButton();
+            });
+        });
+        
+
+    }
+
+    playerAttackFirst()
+    {
+        this.deactiveButton();
+
+        this.player_pokemon.attack(this.enemy_pokemon);
+        this.playerBar.decreaseHealthTo(this.player_pokemon.current_health, this.player_pokemon.health, () => {
+            this.enemy_pokemon.attack(this.player_pokemon);
+            this.updateUI();
+            this.enemyBar.decreaseHealthTo(this.enemy_pokemon.current_health, this.enemy_pokemon.health, () => {
+                this.activeButton();
+            });
+        });
+        
+    }
+
+    endTurn()
+    {
+        
+    }
+
+    updateUI()
+    {
+        this.uiPlayerCurrentHp.text = this.player_pokemon.current_health;
+    }
+
+    returnToWorld()
+    {
+        this.scene.start('city', { from: this.scene.key });
+    }
 }
