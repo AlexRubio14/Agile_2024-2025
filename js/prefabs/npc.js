@@ -65,7 +65,7 @@ export default class NPC extends Phaser.GameObjects.Sprite
 
         if(this.wantsCombat)
         {
-            this.scene.start('combatScene');
+            this.scene.handleNPCCombatInteraction();
         }
     }
 }

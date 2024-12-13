@@ -63,7 +63,7 @@ export default class Route extends Phaser.Scene
         this.player = new player(this, 944, 152)
         this.player.currentDirection = 2
         
-        this.cameras.main.startFollow(this.player).setBounds(8, 8,
+        this.cameras.main.startFollow(this.player).setBounds(0, 0,
             this.map.widthInPixels,this.map.heightInPixels);
     }
 
@@ -95,5 +95,9 @@ export default class Route extends Phaser.Scene
         this.scene.start('city', { from: this.scene.key });
     }
 
+    handleNPCCombatInteraction()
+    {
+        this.scene.start('Combat', { from: this.scene.key });
+    }
 
 }

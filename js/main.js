@@ -17,7 +17,7 @@ var config =
     type: Phaser.AUTO,
     width: gamePrefs.gameWidth,
     height: gamePrefs.gameHeight,
-    scene: [playerRoom, playerHouse, city, laboratory, elmHouse, route, npcHouse],
+    scene: [route,playerRoom, playerHouse, city, laboratory, elmHouse, npcHouse, combatScene],
     render:
     {
         pixelArt:true
