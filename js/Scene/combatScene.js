@@ -172,10 +172,10 @@ export default class combatScene extends Phaser.Scene
 
     activeButton()
     {
-        this.time.delayedCall(2000, () => {
-            this.buttonSelected.selectButton();
-            this.isUIActive = true;
-        });
+
+        this.buttonSelected.selectButton();
+        this.isUIActive = true;
+
     }
  
     loadAnimations()
@@ -280,31 +280,42 @@ export default class combatScene extends Phaser.Scene
                 }
             }
         }
-        this.endTurn();
     }
 
     enemyAttackFirst()
     {
+        this.deactiveButton();
+
         this.enemy_pokemon.attack(this.player_pokemon);
-        this.playerBar.decreaseHealthTo(this.player_pokemon.current_health, this.player_pokemon.health);
-        this.player_pokemon.attack(this.enemy_pokemon);
-        this.enemyBar.decreaseHealthTo(this.enemy_pokemon.current_health, this.enemy_pokemon.health);
+        this.updateUI();
+        this.playerBar.decreaseHealthTo(this.player_pokemon.current_health, this.player_pokemon.health, () => {
+            this.player_pokemon.attack(this.enemy_pokemon);
+            this.enemyBar.decreaseHealthTo(this.enemy_pokemon.current_health, this.enemy_pokemon.health, () => {
+                this.activeButton();
+            });
+        });
+        
 
     }
 
     playerAttackFirst()
     {
+        this.deactiveButton();
+
         this.player_pokemon.attack(this.enemy_pokemon);
-        this.playerBar.decreaseHealthTo(this.player_pokemon.current_health, this.player_pokemon.health);
-        this.enemy_pokemon.attack(this.player_pokemon);
-        this.enemyBar.decreaseHealthTo(this.enemy_pokemon.current_health, this.enemy_pokemon.health);
+        this.playerBar.decreaseHealthTo(this.player_pokemon.current_health, this.player_pokemon.health, () => {
+            this.enemy_pokemon.attack(this.player_pokemon);
+            this.updateUI();
+            this.enemyBar.decreaseHealthTo(this.enemy_pokemon.current_health, this.enemy_pokemon.health, () => {
+                this.activeButton();
+            });
+        });
+        
     }
 
     endTurn()
     {
-        this.deactiveButton();
-        this.updateUI();
-        this.activeButton();
+        
     }
 
     updateUI()

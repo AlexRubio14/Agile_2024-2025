@@ -40,7 +40,7 @@ export default class healthBar
         this.draw();
     }
 
-    decreaseHealthTo(newHealth, maxHealth, duration = 1000) {
+    decreaseHealthTo(newHealth, maxHealth, onComplete = null, duration = 1000) {
         // Clamp the new health value to valid range
         newHealth = Phaser.Math.Clamp(newHealth, 0, maxHealth);
     
@@ -57,7 +57,7 @@ export default class healthBar
                 this.draw(); // Redraw the bar with updated currentValue
             },
             onComplete: () => {
-                if (typeof onComplete === 'function') {
+                if (onComplete) {
                     onComplete(); // Call the callback function if provided
                 }
             }
