@@ -15,8 +15,8 @@ export default class Tittle extends Phaser.Scene
         this.load.spritesheet('ho-ho','Ho-Ho.png',
             {frameWidth:64,frameHeight:56});
 
-            this.load.spritesheet('spark','sparks.png',
-                {frameWidth:7,frameHeight:16});
+        this.load.spritesheet('spark','sparks.png',
+            {frameWidth:7,frameHeight:16});
     }
 
     create()
