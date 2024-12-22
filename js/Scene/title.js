@@ -11,7 +11,7 @@ export default class Tittle extends Phaser.Scene
 
         this.load.setPath('assets/sprites');
         this.load.image('tittle', 'Tittle.png');
-        this.load.image('sky', 'sky.png');
+        this.load.image('skytittle', 'sky.png');
         this.load.spritesheet('ho-ho','Ho-Ho.png',
             {frameWidth:64,frameHeight:56});
 
@@ -22,8 +22,8 @@ export default class Tittle extends Phaser.Scene
     create()
     {
         this.tittle = this.add.image(0,0,'tittle').setOrigin(0);
-        this.sky = this.physics.add.image(0,92,'sky').setOrigin(0);
-        this.secondSky = this.physics.add.image(-159,92,'sky').setOrigin(0);
+        this.sky = this.physics.add.image(0,92,'skytittle').setOrigin(0);
+        this.secondSky = this.physics.add.image(-159,92,'skytittle').setOrigin(0);
         this.hoho = this.add.sprite(80, 87, 'ho-ho');
         this.LoadAnimation();
         this.hoho.play('fly');

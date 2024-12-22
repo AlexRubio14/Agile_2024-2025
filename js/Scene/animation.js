@@ -89,6 +89,8 @@ export default class Animaiton extends Phaser.Scene
         });
     }
 
+
+
     MoveSea()
     {
         this.tweens.add({
@@ -130,6 +132,15 @@ export default class Animaiton extends Phaser.Scene
             duration: 3000,           
             ease: 'Linear',           
             onComplete: () => {     
+                const fade = this.add.rectangle(0, 0, this.scale.width, this.scale.height, 0xffffff).setOrigin(0).setAlpha(0);
+                this.tweens.add({
+                    targets: fade,
+                    alpha: 1, 
+                    duration: 500, 
+                    onComplete: () => {
+                        this.scene.start('forest', { from: this.scene.key });
+                    }
+                });
                 
             }
         });
