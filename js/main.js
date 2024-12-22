@@ -9,6 +9,10 @@ import npcHouse from '/js/scene/npchouse.js';
 import playerHouse from '/js/scene/PlayerHouse.js';
 import playerRoom from '/js/scene/PlayerRoom.js';
 import route from '/js/scene/route.js';
+import tittle from '/js/scene/title.js'
+import animation from '/js/scene/animation.js'
+import forest from '/js/scene/forest.js'
+import starterts from '/js/scene/starters.js'
 
 import {gamePrefs} from '/js/globals.js';
 
@@ -17,7 +21,7 @@ var config =
     type: Phaser.AUTO,
     width: gamePrefs.gameWidth,
     height: gamePrefs.gameHeight,
-    scene: [route,playerRoom, playerHouse, city, laboratory, elmHouse, npcHouse, combatScene],
+    scene: [animation,forest,starterts, tittle, playerRoom, playerHouse, city, laboratory, elmHouse, npcHouse, route, combatScene],
     render:
     {
         pixelArt:true
@@ -27,7 +31,7 @@ var config =
         default:'arcade',
         arcade:
         {
-            debug:true
+            debug:false
         }
     },
     scale:
