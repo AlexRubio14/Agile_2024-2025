@@ -93,6 +93,9 @@
  </layer>
  <objectgroup id="6" name="Objects">
   <object id="1" name="man" type="npc" x="22.6384" y="69.1456">
+   <properties>
+    <property name="dialogue_01" value="Nunca he visto al CHINO en clase de PHASER."/>
+   </properties>
    <point/>
   </object>
  </objectgroup>

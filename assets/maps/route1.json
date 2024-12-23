@@ -217,6 +217,12 @@
                  "y":123
                 }],
          "opacity":1,
+         "properties":[
+                {
+                 "name":"dialogue_01",
+                 "type":"string",
+                 "value":"Donde te crees que vas, no pasaras sin un COMBATE POKEMON!"
+                }],
          "type":"objectgroup",
          "visible":true,
          "x":0,
@@ -226,7 +232,7 @@
  "nextobjectid":2,
  "orientation":"orthogonal",
  "renderorder":"right-down",
- "tiledversion":"1.10.1",
+ "tiledversion":"1.11.0",
  "tileheight":8,
  "tilesets":[
         {

@@ -96,6 +96,9 @@
  </layer>
  <objectgroup id="6" name="Objects">
   <object id="1" name="man" type="npc" x="120.82" y="70.8681">
+   <properties>
+    <property name="dialogue_01" value="RICHARD le da mil vueltas a RADEV."/>
+   </properties>
    <point/>
   </object>
  </objectgroup>

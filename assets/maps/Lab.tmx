@@ -128,6 +128,9 @@
  </layer>
  <objectgroup id="6" name="Objects">
   <object id="1" name="elm" type="npc" x="79.9727" y="64.689">
+   <properties>
+    <property name="dialogue_01" value="La POKEBALL de encima de la mesa contiene un POKEMON muy especial, puedes llevartela."/>
+   </properties>
    <point/>
   </object>
   <object id="2" name="pokeball" type="pokeball" x="131.155" y="67.5325">

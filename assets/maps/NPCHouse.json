@@ -128,12 +128,18 @@
                  "id":1,
                  "name":"man",
                  "point":true,
+                 "properties":[
+                        {
+                         "name":"dialogue_01",
+                         "type":"string",
+                         "value":"Nunca he visto al CHINO en clase de PHASER."
+                        }],
                  "rotation":0,
                  "type":"npc",
                  "visible":true,
                  "width":0,
-                 "x":22.6384142173616,
-                 "y":69.1455912508544
+                 "x":22.6384,
+                 "y":69.1456
                 }],
          "opacity":1,
          "type":"objectgroup",

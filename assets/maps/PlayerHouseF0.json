@@ -157,6 +157,12 @@
                  "id":1,
                  "name":"mother",
                  "point":true,
+                 "properties":[
+                        {
+                         "name":"dialogue_01",
+                         "type":"string",
+                         "value":"Va siendo hora de buscarte un TRABAJO de verdad."
+                        }],
                  "rotation":0,
                  "type":"npc",
                  "visible":true,

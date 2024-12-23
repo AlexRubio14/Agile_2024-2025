@@ -161,12 +161,18 @@
                  "id":1,
                  "name":"elm",
                  "point":true,
+                 "properties":[
+                        {
+                         "name":"dialogue_01",
+                         "type":"string",
+                         "value":"La POKEBALL de encima de la mesa contiene un POKEMON muy especial, puedes llevartela."
+                        }],
                  "rotation":0,
                  "type":"npc",
                  "visible":true,
                  "width":0,
-                 "x":79.9726589200273,
-                 "y":64.688995215311
+                 "x":79.9727,
+                 "y":64.689
                 }, 
                 {
                  "height":0,
@@ -177,8 +183,8 @@
                  "type":"pokeball",
                  "visible":true,
                  "width":0,
-                 "x":131.155160628845,
-                 "y":67.5324675324675
+                 "x":131.155,
+                 "y":67.5325
                 }],
          "opacity":1,
          "type":"objectgroup",
