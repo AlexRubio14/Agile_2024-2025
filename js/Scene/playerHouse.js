@@ -1,6 +1,7 @@
 import {scenePrefs, gamePrefs} from '../globals.js';
 import player from '/js/prefabs/player.js';
 import NPC from '/js/prefabs/npc.js';
+import dialogue from '/js/prefabs/dialogue.js';
 
 export default class PlayerHouse extends Phaser.Scene
 {
@@ -20,6 +21,7 @@ export default class PlayerHouse extends Phaser.Scene
         this.LoadMap();
 
         this.load.setPath('assets/sprites');
+        this.load.image('mother_dialogue','mother_dialogue.png');
         this.load.spritesheet('player_Sprite','player.png',
             {frameWidth:16,frameHeight:16});
 
@@ -94,7 +96,8 @@ export default class PlayerHouse extends Phaser.Scene
             switch(element.type)
             {
                 case 'npc':
-                    var npc = new NPC(this, element.x, element.y, 'mother_Sprite');
+                    var dialogueNPC = new dialogue(this, this.cameras.main.centerX, this.cameras.main.centerY + 30, 'mother_dialogue');
+                    var npc = new NPC(this, element.x, element.y, 'mother_Sprite', dialogueNPC);
                     this.interactives.push(npc);
                 break;
             }
