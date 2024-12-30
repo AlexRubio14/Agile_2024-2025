@@ -1,6 +1,6 @@
 export default class dialogue extends Phaser.GameObjects.Sprite
 {
-    constructor(_scene,_text,_posX,_posY,_spriteTag)
+    constructor(_scene,_posX,_posY,_spriteTag)
     { //instanciar el objeto
         super(_scene,_posX,_posY,_spriteTag);
 

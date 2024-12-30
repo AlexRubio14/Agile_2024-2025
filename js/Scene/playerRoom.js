@@ -14,7 +14,7 @@ export default class PlayerRoom extends Phaser.Scene
 
     preload()
     { 
-        this.game.scale.setGameSize(gamePrefs.gameWidth / 2, gamePrefs.gameHeight / 2);
+        this.game.scale.setGameSize(gamePrefs.gameWidth * 5, gamePrefs.gameHeight * 5);
 
         this.LoadMap()
         this.load.setPath('assets/sprites');
@@ -45,10 +45,10 @@ export default class PlayerRoom extends Phaser.Scene
 
         this.map.addTilesetImage('CityTiles');
 
-        this.map.createLayer('Floor','CityTiles');
-        this.extraWall = this.map.createLayer('ExtraWall','CityTiles');
-        this.wall =this.map.createLayer('Wall','CityTiles');
-        this.door = this.map.createLayer('Door','CityTiles');
+        this.map.createLayer('Floor','CityTiles').setScale(10);
+        this.extraWall = this.map.createLayer('ExtraWall','CityTiles').setScale(10);
+        this.wall =this.map.createLayer('Wall','CityTiles').setScale(10);
+        this.door = this.map.createLayer('Door','CityTiles').setScale(10);
 
         this.map.setCollisionByExclusion(-1,true,true,'Wall'); 
         this.map.setCollisionByExclusion(-1,true,true,'ExtraWall'); 
@@ -58,11 +58,11 @@ export default class PlayerRoom extends Phaser.Scene
     CreatePlayer()
     {
         if(this.fromScene != "playerHouseF0")
-            this.player = new player(this, 35, 92);
+            this.player = new player(this, 350, 920).setScale(10);
         else
-            this.player = new player(this, 128, 32);
+            this.player = new player(this, 1280, 320).setScale(10);
      
-            const extraSpace = 200;
+            const extraSpace = 2000;
             this.cameras.main.setBounds(
                 -extraSpace, 
                 -extraSpace, 

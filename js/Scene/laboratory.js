@@ -2,6 +2,7 @@ import {scenePrefs, gamePrefs} from '../globals.js';
 import player from '/js/prefabs/player.js';
 import NPC from '/js/prefabs/npc.js';
 import Pokeball from '/js/prefabs/pokeball.js';
+import dialogue from '/js/prefabs/dialogue.js';
 
 export default class Laboratory extends Phaser.Scene
 {
@@ -16,10 +17,11 @@ export default class Laboratory extends Phaser.Scene
 
     preload()
     { 
-        this.game.scale.setGameSize(gamePrefs.gameWidth / 2, gamePrefs.gameHeight / 2);
+        this.game.scale.setGameSize(gamePrefs.gameWidth * 5, gamePrefs.gameHeight * 5);
         this.LoadMap();
 
         this.load.setPath('assets/sprites');
+        this.load.image('lab_dialogue','lab_dialogue.png');
         this.load.spritesheet('player_Sprite','player.png',
             {frameWidth:16,frameHeight:16});
         this.load.spritesheet('elm_Sprite','elm.png',
@@ -51,10 +53,10 @@ export default class Laboratory extends Phaser.Scene
 
         this.map.addTilesetImage('CityTiles');
 
-        this.map.createLayer('Floor','CityTiles');
-        this.extraWall = this.map.createLayer('ExtraWall','CityTiles');
-        this.wall =this.map.createLayer('Wall','CityTiles');
-        this.door = this.map.createLayer('Door','CityTiles');
+        this.map.createLayer('Floor','CityTiles').setScale(10);
+        this.extraWall = this.map.createLayer('ExtraWall','CityTiles').setScale(10);
+        this.wall =this.map.createLayer('Wall','CityTiles').setScale(10);
+        this.door = this.map.createLayer('Door','CityTiles').setScale(10);
 
         this.map.setCollisionByExclusion(-1,true,true,'Wall'); 
         this.map.setCollisionByExclusion(-1,true,true,'ExtraWall'); 
@@ -63,10 +65,10 @@ export default class Laboratory extends Phaser.Scene
 
     CreatePlayer()
     {
-        this.player = new player(this, 88, 176)
-        this.player.currentDirection = 1
+        this.player = new player(this, 880, 1760).setScale(10);
+        this.player.currentDirection = 1;
 
-        const extraSpace = 200;
+        const extraSpace = 2000;
         this.cameras.main.setBounds(
             -extraSpace, 
             -extraSpace, 
@@ -87,11 +89,12 @@ export default class Laboratory extends Phaser.Scene
             switch(element.type)
             {
                 case 'npc':
-                    var npc = new NPC(this, element.x, element.y, 'elm_Sprite');
+                    var dialogueNPC = new dialogue(this, this.cameras.main.centerX, this.cameras.main.centerY + 300, 'lab_dialogue').setScale(8);
+                    var npc = new NPC(this, element.x * 10, element.y * 10, 'elm_Sprite', dialogueNPC).setScale(10);
                     this.interactives.push(npc);
                 break;
                 case 'pokeball':
-                    var pokeball = new Pokeball(this, element.x, element.y, 'pokeball_Sprite');
+                    var pokeball = new Pokeball(this, element.x * 10, element.y * 10, 'pokeball_Sprite').setScale(10);
                     this.interactives.push(pokeball);
                 break;
             }

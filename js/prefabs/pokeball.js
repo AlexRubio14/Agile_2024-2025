@@ -8,7 +8,7 @@ export default class Pokeball extends Phaser.GameObjects.Sprite
         this.body.setImmovable(true);
         this.pokeball = this;
         this.scene = _scene;
-        this.detectionZone = this.scene.add.zone(this.x, this.y).setSize(25, 35); 
+        this.detectionZone = this.scene.add.zone(this.x, this.y).setSize(250, 350); 
         this.scene.physics.world.enable(this.detectionZone);  
         this.detectionZone.body.setImmovable(true);  
         this.inZone;

@@ -8,7 +8,7 @@ export default class NPC extends Phaser.GameObjects.Sprite
         this.body.setImmovable(true);
         this.npc = this;
         this.scene = _scene;
-        this.detectionZone = this.scene.add.zone(this.x, this.y).setSize(25, 25); 
+        this.detectionZone = this.scene.add.zone(this.x, this.y).setSize(250, 250); 
         this.scene.physics.world.enable(this.detectionZone);  
         this.detectionZone.body.setImmovable(true);
         this.inZone;
@@ -49,7 +49,6 @@ export default class NPC extends Phaser.GameObjects.Sprite
 
     interaction(playerDirection)
     {
-        console.log("npc");
         switch(playerDirection)
         {
             case 0:
@@ -73,7 +72,6 @@ export default class NPC extends Phaser.GameObjects.Sprite
         else 
         {
             this.dialogue.DeactivateText();
-
 
             if(this.wantsCombat)
                 this.scene.handleNPCCombatInteraction();

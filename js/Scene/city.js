@@ -15,7 +15,7 @@ export default class City extends Phaser.Scene
 
     preload()
     { 
-        this.game.scale.setGameSize(gamePrefs.gameWidth / 2, gamePrefs.gameHeight / 2);
+        this.game.scale.setGameSize(gamePrefs.gameWidth * 5, gamePrefs.gameHeight * 5);
         this.LoadMap();
 
         this.load.setPath('assets/sprites');
@@ -111,14 +111,14 @@ export default class City extends Phaser.Scene
 
         this.map.addTilesetImage('city_tiles');
 
-        this.map.createLayer('Floor','city_tiles');
-        this.extraWall = this.map.createLayer('ExtraWall','city_tiles');
-        this.wall = this.map.createLayer('Wall','city_tiles');
-        this.playerHouseDoor = this.map.createLayer('PlayerHouseDoor','city_tiles');
-        this.LabDoor = this.map.createLayer('LabDoor','city_tiles');
-        this.ElmHouseDoor = this.map.createLayer('ElmHouseDoor','city_tiles');
-        this.NPCHouseDoor = this.map.createLayer('NPCHouseDoor','city_tiles');
-        this.Route1Door = this.map.createLayer('Route1Door','city_tiles');
+        this.map.createLayer('Floor','city_tiles').setScale(10);
+        this.extraWall = this.map.createLayer('ExtraWall','city_tiles').setScale(10);
+        this.wall = this.map.createLayer('Wall','city_tiles').setScale(10);
+        this.playerHouseDoor = this.map.createLayer('PlayerHouseDoor','city_tiles').setScale(10);
+        this.LabDoor = this.map.createLayer('LabDoor','city_tiles').setScale(10);
+        this.ElmHouseDoor = this.map.createLayer('ElmHouseDoor','city_tiles').setScale(10);
+        this.NPCHouseDoor = this.map.createLayer('NPCHouseDoor','city_tiles').setScale(10);
+        this.Route1Door = this.map.createLayer('Route1Door','city_tiles').setScale(10);
 
         this.map.setCollisionByExclusion(-1,true,true,'Wall'); 
         this.map.setCollisionByExclusion(-1,true,true,'ExtraWall'); 
@@ -132,21 +132,21 @@ export default class City extends Phaser.Scene
     CreatePlayer()
     {
         if(this.fromScene == "playerHouseF0")
-            this.player = new player(this, 224, 104);
+            this.player = new player(this, 2240, 1040).setScale(10);
         else if(this.fromScene == "laboratory")
-            this.player = new player(this, 112, 72);
+            this.player = new player(this, 1120, 720).setScale(10);
         else if(this.fromScene == "elmhouse")
-            this.player = new player(this, 64, 208);
+            this.player = new player(this, 640, 2080).setScale(10);
         else if(this.fromScene == "npchouse")
-            this.player = new player(this, 192, 240);
+            this.player = new player(this, 1920, 2400).setScale(10);
         else if(this.fromScene == "route")
         {
-            this.player = new player(this, 24, 152);
+            this.player = new player(this, 240, 1520).setScale(10);
             this.player.currentDirection = 3;
         }
      
-        this.cameras.main.startFollow(this.player).setBounds(8, 8,
-            this.map.widthInPixels,this.map.heightInPixels);
+        this.cameras.main.startFollow(this.player).setBounds(0, 0,
+            this.map.widthInPixels * 10,this.map.heightInPixels * 10);
     }
 
     CreateNPC()
@@ -159,7 +159,7 @@ export default class City extends Phaser.Scene
             switch(element.type)
             {
                 case 'npc':
-                    var npc = new NPC(this, element.x, element.y, 'city_man');
+                    var npc = new NPC(this, element.x * 10, element.y * 10, 'city_man').setScale(10);
                     this.interactives.push(npc);
                 break;
             }

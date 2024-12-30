@@ -14,12 +14,16 @@ export default class player extends Phaser.GameObjects.Sprite
         this.setColliders();
         this.currentDirection = 0;
         this.LoadAnimations();
+        this.keyPressed = false;
 
-        const interactionDistance = 16;
+        const interactionDistance = 160;
     }
 
     preUpdate(time,delta)
     {
+        if (this.cursors.space.isUp)
+            this.keyPressed = false;
+
         this.PlayerMovement();
         this.PlayerInteraction();
         super.preUpdate(time, delta);
@@ -134,8 +138,10 @@ export default class player extends Phaser.GameObjects.Sprite
 
     PlayerInteraction()
     {
-        if (Phaser.Input.Keyboard.DownDuration(this.cursors.space, 250))
+        if (this.cursors.space.isDown && !this.keyPressed)
         {
+        this.keyPressed = true; 
+
             if(this.scene.interactives != null)
             {
                 for (const interactiveObject of this.scene.interactives){

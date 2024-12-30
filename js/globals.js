@@ -2,7 +2,7 @@ export const gamePrefs=
 {
     gameWidth:256,
     gameHeight:208,
-    PLAYER_SPEED:75, 
+    PLAYER_SPEED:750, 
 };
 
 export const scenePrefs=
