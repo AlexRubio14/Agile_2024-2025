@@ -68,10 +68,12 @@ export default class NPC extends Phaser.GameObjects.Sprite
         if(!this.dialogue.visible)
         {
             this.dialogue.ActivateText();
+            this.scene.player.isInteracting = true;
         }
         else 
         {
             this.dialogue.DeactivateText();
+            this.scene.player.isInteracting = false;
 
             if(this.wantsCombat)
                 this.scene.handleNPCCombatInteraction();

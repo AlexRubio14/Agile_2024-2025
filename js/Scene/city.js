@@ -1,6 +1,7 @@
 import {scenePrefs, gamePrefs} from '../globals.js';
 import player from '/js/prefabs/player.js';
 import NPC from '/js/prefabs/npc.js';
+import dialogue from '/js/prefabs/dialogue.js';
 
 export default class City extends Phaser.Scene
 {
@@ -19,6 +20,7 @@ export default class City extends Phaser.Scene
         this.LoadMap();
 
         this.load.setPath('assets/sprites');
+        this.load.image('npc_city_dialogue','npc_city_dialogue.png');
         this.load.spritesheet('player_Sprite','player.png',
             {frameWidth:16,frameHeight:16});
         this.load.spritesheet('city_man', 'city_man.png',
@@ -152,14 +154,14 @@ export default class City extends Phaser.Scene
     CreateNPC()
     {
         this.interactives = [];
-
         this.game_objects = this.map.getObjectLayer('Objects');
         this.game_objects.objects.forEach(function(element)
         {
             switch(element.type)
             {
                 case 'npc':
-                    var npc = new NPC(this, element.x * 10, element.y * 10, 'city_man').setScale(10);
+                    var dialogueNPC = new dialogue(this, this.cameras.main.centerX, this.cameras.main.centerY + 300, 'npc_city_dialogue').setScale(8);
+                    var npc = new NPC(this, element.x * 10, element.y * 10, 'city_man', dialogueNPC).setScale(10);
                     this.interactives.push(npc);
                 break;
             }
