@@ -1,6 +1,7 @@
 import {scenePrefs, gamePrefs} from '../globals.js';
 import player from '/js/prefabs/player.js';
 import NPC from '/js/prefabs/npc.js';
+import dialogue from '/js/prefabs/dialogue.js';
 
 export default class NpcHouse extends Phaser.Scene
 {
@@ -15,10 +16,11 @@ export default class NpcHouse extends Phaser.Scene
 
     preload()
     { 
-        this.game.scale.setGameSize(gamePrefs.gameWidth / 2, gamePrefs.gameHeight / 2);
+        this.game.scale.setGameSize(gamePrefs.gameWidth * 5, gamePrefs.gameHeight * 5);
         this.LoadMap();
 
         this.load.setPath('assets/sprites');
+        this.load.image('npc_house_dialogue','npc_house_dialogue.png');
         this.load.spritesheet('player_Sprite','player.png',
             {frameWidth:16,frameHeight:16});
         this.load.spritesheet('npc_house_Sprite','npc_house.png',
@@ -48,10 +50,10 @@ export default class NpcHouse extends Phaser.Scene
 
         this.map.addTilesetImage('CityTiles');
 
-        this.map.createLayer('Floor','CityTiles');
-        this.extraWall = this.map.createLayer('ExtraWall','CityTiles');
-        this.wall =this.map.createLayer('Wall','CityTiles');
-        this.door = this.map.createLayer('Door','CityTiles');
+        this.map.createLayer('Floor','CityTiles').setScale(10);
+        this.extraWall = this.map.createLayer('ExtraWall','CityTiles').setScale(10);
+        this.wall =this.map.createLayer('Wall','CityTiles').setScale(10);
+        this.door = this.map.createLayer('Door','CityTiles').setScale(10);
 
         this.map.setCollisionByExclusion(-1,true,true,'Wall'); 
         this.map.setCollisionByExclusion(-1,true,true,'ExtraWall'); 
@@ -60,10 +62,10 @@ export default class NpcHouse extends Phaser.Scene
 
     CreatePlayer()
     {
-        this.player = new player(this, 56, 112)
+        this.player = new player(this, 560, 1120).setScale(10);
         this.player.currentDirection = 1
 
-        const extraSpace = 200;
+        const extraSpace = 2000;
         this.cameras.main.setBounds(
             -extraSpace, 
             -extraSpace, 
@@ -84,7 +86,8 @@ export default class NpcHouse extends Phaser.Scene
             switch(element.type)
             {
                 case 'npc':
-                    var npc = new NPC(this, element.x, element.y, 'npc_house_Sprite');
+                    var dialogueNPC = new dialogue(this, this.cameras.main.centerX, this.cameras.main.centerY + 300, 'npc_house_dialogue').setScale(8);
+                    var npc = new NPC(this, element.x * 10, element.y * 10, 'npc_house_Sprite', dialogueNPC).setScale(10);
                     this.interactives.push(npc);
                 break;
             }

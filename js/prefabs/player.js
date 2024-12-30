@@ -14,12 +14,17 @@ export default class player extends Phaser.GameObjects.Sprite
         this.setColliders();
         this.currentDirection = 0;
         this.LoadAnimations();
+        this.keyPressed = false;
+        this.isInteracting = false;
 
-        const interactionDistance = 16;
+        const interactionDistance = 160;
     }
 
     preUpdate(time,delta)
     {
+        if (this.cursors.space.isUp)
+            this.keyPressed = false;
+
         this.PlayerMovement();
         this.PlayerInteraction();
         super.preUpdate(time, delta);
@@ -84,6 +89,15 @@ export default class player extends Phaser.GameObjects.Sprite
 
     PlayerMovement()
     {
+        if(this.isInteracting)
+        {
+            this.player.body.setVelocityX(0);
+            this.player.body.setVelocityY(0);
+    
+            this.StopWallking();
+            return;
+        }
+
         if(this.cursors.left.isDown)
             { 
                 this.player.body.setVelocityY(0);
@@ -134,33 +148,34 @@ export default class player extends Phaser.GameObjects.Sprite
 
     PlayerInteraction()
     {
-        if (Phaser.Input.Keyboard.DownDuration(this.cursors.space, 250))
+        if (this.cursors.space.isDown && !this.keyPressed)
         {
             if(this.scene.interactives != null)
             {
                 for (const interactiveObject of this.scene.interactives){
                     if(interactiveObject.inZone)
                     {
-                    const playerX = this.player.x;
-                    const playerY = this.player.y;
-                    const npcX = interactiveObject.x;
-                    const npcY = interactiveObject.y;
+                        const playerX = this.player.x;
+                        const playerY = this.player.y;
+                        const npcX = interactiveObject.x;
+                        const npcY = interactiveObject.y;
 
-                    const deltaX = npcX - playerX;
-                    const deltaY = npcY - playerY;
+                        const deltaX = npcX - playerX;
+                        const deltaY = npcY - playerY;
 
-                    let canInteract = false;
-                    if ((this.currentDirection === 0 && deltaY > 0 && Math.abs(deltaX) < Math.abs(deltaY)) || 
-                    (this.currentDirection === 1 && deltaY < 0 && Math.abs(deltaX) < Math.abs(deltaY)) ||
-                    (this.currentDirection === 2 && deltaX < 0 && Math.abs(deltaX) > Math.abs(deltaY)) ||
-                    (this.currentDirection === 3 && deltaX > 0 && Math.abs(deltaX) > Math.abs(deltaY))) {
-                        canInteract = true;
-                    }
+                        let canInteract = false;
+                        if ((this.currentDirection === 0 && deltaY > 0 && Math.abs(deltaX) < Math.abs(deltaY)) || 
+                        (this.currentDirection === 1 && deltaY < 0 && Math.abs(deltaX) < Math.abs(deltaY)) ||
+                        (this.currentDirection === 2 && deltaX < 0 && Math.abs(deltaX) > Math.abs(deltaY)) ||
+                        (this.currentDirection === 3 && deltaX > 0 && Math.abs(deltaX) > Math.abs(deltaY))) {
+                            canInteract = true;
+                        }
 
-                    if (canInteract) {
-                        interactiveObject.interaction(this.player.currentDirection);
-                        break;
-                    }
+                        if (canInteract) {
+                            interactiveObject.interaction(this.player.currentDirection);
+                            this.keyPressed = true; 
+                            break;
+                        }
                     }
                 }
             }

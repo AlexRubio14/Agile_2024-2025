@@ -1,8 +1,6 @@
-import dialogue from '/js/prefabs/dialogue.js';
-
 export default class NPC extends Phaser.GameObjects.Sprite 
 {
-    constructor(_scene,_posX,_posY,_spriteTag, _dialogues_array, _wantsCombat = false)
+    constructor(_scene,_posX,_posY,_spriteTag, _dialogue, _wantsCombat = false)
     { 
         super(_scene,_posX,_posY,_spriteTag);
         _scene.add.existing(this);
@@ -10,15 +8,13 @@ export default class NPC extends Phaser.GameObjects.Sprite
         this.body.setImmovable(true);
         this.npc = this;
         this.scene = _scene;
-        this.detectionZone = this.scene.add.zone(this.x, this.y).setSize(25, 25); 
+        this.detectionZone = this.scene.add.zone(this.x, this.y).setSize(250, 250); 
         this.scene.physics.world.enable(this.detectionZone);  
         this.detectionZone.body.setImmovable(true);
         this.inZone;
         this.setColliders();
 
-        this.currentDialogue = 0;
-        this.dialogues_array = _dialogues_array;
-        this.dialogue = this.dialogues_array[0]
+        this.dialogue = _dialogue;
 
         this.wantsCombat = _wantsCombat;
     }
@@ -53,7 +49,6 @@ export default class NPC extends Phaser.GameObjects.Sprite
 
     interaction(playerDirection)
     {
-        console.log("npc");
         switch(playerDirection)
         {
             case 0:
@@ -70,18 +65,16 @@ export default class NPC extends Phaser.GameObjects.Sprite
                 break;
         }
 
-        console.log(this.dialogues_array.lenght);
-        if(this.currentDialogue < this.dialogues_array.lenght)
+        if(!this.dialogue.visible)
         {
-            //crear dialogo
-            this.dialogue = new dialogue(this.dialogues_array[this.currentDialogue].scene, this.dialogues_array[this.currentDialogue].text,
-                 this.dialogues_array[this.currentDialogue].posX, this.dialogues_array[this.currentDialogue].posY);
-            this.currentDialogue++;
+            this.dialogue.ActivateText();
+            this.scene.player.isInteracting = true;
         }
         else 
         {
-            currentdialogue = 0;
-            this.dialogue.setVisible(false);
+            this.dialogue.DeactivateText();
+            this.scene.player.isInteracting = false;
+
             if(this.wantsCombat)
                 this.scene.handleNPCCombatInteraction();
         }
