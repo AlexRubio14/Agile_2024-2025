@@ -65,7 +65,10 @@ export default class Laboratory extends Phaser.Scene
 
     CreatePlayer()
     {
-        this.player = new player(this, 880, 1760).setScale(10);
+        if(this.fromScene == "Combat")
+            this.player = new player(this, 240, 680).setScale(10);
+        else
+            this.player = new player(this, 880, 1760).setScale(10);
         this.player.currentDirection = 1;
 
         const extraSpace = 2000;

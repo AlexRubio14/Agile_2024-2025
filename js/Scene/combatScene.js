@@ -84,7 +84,7 @@ export default class combatScene extends Phaser.Scene
         this.player_pokemon = new pokemon(this, "totodile", pokemonPrefs.playerPokemonPosX, pokemonPrefs.playerPokemonPosY, false, "TOTODILE", ["WATER"], 
             pokemonPrefs.TOTODILE_HEALTH, pokemonPrefs.TOTODILE_PHYSICAL_ATTACK, pokemonPrefs.TOTODILE_PHYSICAL_DEFENSE,
             pokemonPrefs.TOTODILE_SPECIAL_ATTACK, pokemonPrefs.TOTODILE_SPECIAL_DEFENSE, pokemonPrefs.TOTODILE_SPEED,
-            totodile_movements
+            totodile_movements, false
         );
     }
 
@@ -323,8 +323,11 @@ export default class combatScene extends Phaser.Scene
         this.uiPlayerCurrentHp.text = this.player_pokemon.current_health;
     }
 
-    returnToWorld()
+    returnToWorld(isEnemy)
     {
-        this.scene.start('city', { from: this.scene.key });
+        if(isEnemy)
+            this.scene.start('tittle', { from: this.scene.key });
+        else
+            this.scene.start('laboratory', { from: this.scene.key });
     }
 }

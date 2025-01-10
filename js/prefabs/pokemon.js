@@ -1,6 +1,6 @@
 export default class pokemon extends Phaser.GameObjects.Sprite
 {
-    constructor(_scene, _spriteTag, _posX, _posY, is_animated, _name, _type, _base_health, _base_physical_attack, _base_physical_defense, _special_attack, _special_defense, _base_speed, _attacks_array)
+    constructor(_scene, _spriteTag, _posX, _posY, is_animated, _name, _type, _base_health, _base_physical_attack, _base_physical_defense, _special_attack, _special_defense, _base_speed, _attacks_array, enemy = true)
     {
         super(_scene,_posX,_posY,_spriteTag);
         _scene.add.existing(this);
@@ -24,6 +24,8 @@ export default class pokemon extends Phaser.GameObjects.Sprite
         this.damage = 0;
 
         this.attacks_array = _attacks_array;
+
+        this.enemyPokemon = enemy;
         
         this.initStats();
 
@@ -124,6 +126,6 @@ export default class pokemon extends Phaser.GameObjects.Sprite
     die()
     {
         //llamar a una funcion de la escena q haga cosas visuales
-        this.scene.returnToWorld(); 
+        this.scene.returnToWorld(this.enemyPokemon); 
     }
 }
