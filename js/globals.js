@@ -2,7 +2,8 @@ export const gamePrefs=
 {
     gameWidth:256,
     gameHeight:208,
-    PLAYER_SPEED:750, 
+    PLAYER_SPEED:750,
+    hasPokemon: false,
 };
 
 export const scenePrefs=
@@ -13,8 +14,8 @@ export const scenePrefs=
 
 export const pokemonPrefs=
 {
-    playerName:"RICHARD",
-    trainer1Name:"RADEV",
+    playerName: "RICHARD",
+    trainer1Name: "RADEV",
 
     playerPokemonPosX: 200,
     playerPokemonPosY: 360,

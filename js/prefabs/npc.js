@@ -1,3 +1,5 @@
+import { gamePrefs } from "../globals.js";
+
 export default class NPC extends Phaser.GameObjects.Sprite 
 {
     constructor(_scene,_posX,_posY,_spriteTag, _dialogue, _wantsCombat = false)
@@ -47,7 +49,7 @@ export default class NPC extends Phaser.GameObjects.Sprite
        this.inZone = true;  
     }
 
-    interaction(playerDirection)
+    interaction(playerDirection,)
     {
         switch(playerDirection)
         {
@@ -75,7 +77,7 @@ export default class NPC extends Phaser.GameObjects.Sprite
             this.dialogue.DeactivateText();
             this.scene.player.isInteracting = false;
 
-            if(this.wantsCombat)
+            if(this.wantsCombat && gamePrefs.hasPokemon)
                 this.scene.handleNPCCombatInteraction();
         }
     }

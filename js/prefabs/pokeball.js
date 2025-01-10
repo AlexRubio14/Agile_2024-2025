@@ -1,6 +1,8 @@
+import { gamePrefs } from "../globals.js";
+
 export default class Pokeball extends Phaser.GameObjects.Sprite 
 {
-    constructor(_scene,_posX,_posY,_spriteTag)
+    constructor(_scene,_posX,_posY,_spriteTag, _dialogue)
     { 
         super(_scene,_posX,_posY,_spriteTag);
         _scene.add.existing(this);
@@ -13,6 +15,8 @@ export default class Pokeball extends Phaser.GameObjects.Sprite
         this.detectionZone.body.setImmovable(true);  
         this.inZone;
         this.setColliders();
+
+        this.dialogue = _dialogue;
     }
 
     preUpdate(time,delta)
@@ -42,10 +46,23 @@ export default class Pokeball extends Phaser.GameObjects.Sprite
     
     handleOverlap(detectionZone, player) {
         this.inZone = true;  
-     }
+    }
 
-    interaction(playerDirection)
-    {
-        console.log("pokeball");
+    interaction(playerDirection) {
+        gamePrefs.hasPokemon = true;
+
+        if(!this.dialogue.visible)
+        {
+            this.dialogue.ActivateText();
+            this.scene.player.isInteracting = true;
+        }
+        else 
+        {
+            this.dialogue.DeactivateText();
+            this.scene.player.isInteracting = false;
+    
+            this.scene.destroyPokeball();
+            this.destroy();
+        }
     }
 }

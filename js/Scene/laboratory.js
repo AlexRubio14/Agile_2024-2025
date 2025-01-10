@@ -22,6 +22,7 @@ export default class Laboratory extends Phaser.Scene
 
         this.load.setPath('assets/sprites');
         this.load.image('lab_dialogue','lab_dialogue.png');
+        this.load.image('pokeball_dialogue','pokeball_dialogue.png');
         this.load.spritesheet('player_Sprite','player.png',
             {frameWidth:16,frameHeight:16});
         this.load.spritesheet('elm_Sprite','elm.png',
@@ -97,7 +98,8 @@ export default class Laboratory extends Phaser.Scene
                     this.interactives.push(npc);
                 break;
                 case 'pokeball':
-                    var pokeball = new Pokeball(this, element.x * 10, element.y * 10, 'pokeball_Sprite').setScale(10);
+                    var dialoguePokeball = new dialogue(this, this.cameras.main.centerX, this.cameras.main.centerY + 300, 'pokeball_dialogue').setScale(8);
+                    var pokeball = new Pokeball(this, element.x * 10, element.y * 10, 'pokeball_Sprite', dialoguePokeball).setScale(10);
                     this.interactives.push(pokeball);
                 break;
             }
@@ -113,6 +115,11 @@ export default class Laboratory extends Phaser.Scene
 
     handleDoorCollision() {
         this.scene.start('city', { from: this.scene.key });
+    }
+
+    destroyPokeball()
+    {
+        this.interactives.pop();
     }
 
 

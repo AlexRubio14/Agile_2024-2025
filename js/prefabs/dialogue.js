@@ -13,6 +13,7 @@ export default class dialogue extends Phaser.GameObjects.Sprite
         // this.text = _text;
         // console.log(this.text);
 
+        this.setDepth(100);
         this.setVisible(false);
     }
 
