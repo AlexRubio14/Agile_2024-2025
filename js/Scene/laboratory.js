@@ -98,9 +98,12 @@ export default class Laboratory extends Phaser.Scene
                     this.interactives.push(npc);
                 break;
                 case 'pokeball':
-                    var dialoguePokeball = new dialogue(this, this.cameras.main.centerX, this.cameras.main.centerY + 300, 'pokeball_dialogue').setScale(8);
-                    var pokeball = new Pokeball(this, element.x * 10, element.y * 10, 'pokeball_Sprite', dialoguePokeball).setScale(10);
-                    this.interactives.push(pokeball);
+                    if(!gamePrefs.hasPokemon)
+                    {
+                        var dialoguePokeball = new dialogue(this, this.cameras.main.centerX, this.cameras.main.centerY + 300, 'pokeball_dialogue').setScale(8);
+                        var pokeball = new Pokeball(this, element.x * 10, element.y * 10, 'pokeball_Sprite', dialoguePokeball).setScale(10);
+                        this.interactives.push(pokeball);
+                    }
                 break;
             }
         },this);

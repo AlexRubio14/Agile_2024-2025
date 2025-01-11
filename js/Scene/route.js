@@ -2,6 +2,7 @@ import {scenePrefs, gamePrefs} from '../globals.js';
 import player from '/js/prefabs/player.js';
 import NPC from '/js/prefabs/npc.js';
 import dialogue from '/js/prefabs/dialogue.js';
+import AudioManager from '/js/audioManager.js';
 
 export default class Route extends Phaser.Scene
 {
@@ -33,6 +34,13 @@ export default class Route extends Phaser.Scene
         this.CreatePlayer();
         this.AddCollisions();
         this.CreateNPC();
+        this.CreateAudio();
+    }
+
+    CreateAudio()
+    {
+        this.audioManager = new AudioManager(this);
+        this.audioManager.updateScene(this);
     }
 
     LoadMap()

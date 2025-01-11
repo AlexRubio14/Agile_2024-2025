@@ -1,3 +1,5 @@
+import AudioManager from '/js/audioManager.js';
+
 export default class Tittle extends Phaser.Scene
 {
     constructor()
@@ -17,6 +19,10 @@ export default class Tittle extends Phaser.Scene
 
         this.load.spritesheet('spark','sparks.png',
             {frameWidth:7,frameHeight:16});
+
+            
+        this.load.setPath('assets/audio');
+        this.load.audio('backgroundMusic', 'NewBarkTown.wav');
     }
 
     create()
@@ -36,8 +42,19 @@ export default class Tittle extends Phaser.Scene
             callbackScope: this,
             loop: true 
         });
+
+        this.CreateAudio()
     }
  
+    CreateAudio()
+    {
+        this.audioManager = new AudioManager(this);
+        this.audioManager.updateScene(this);
+
+        this.audioManager.addSound('backgroundMusic', { loop: true, volume: 0.3 });
+        this.audioManager.playSound('backgroundMusic');
+    }
+
     LoadAnimation()
     {
         this.anims.create(

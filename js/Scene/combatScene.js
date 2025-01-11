@@ -4,6 +4,7 @@ import pokemon from '/js/prefabs/pokemon.js';
 import button from '/js/prefabs/button.js';
 import ValueBar from '../prefabs/healthBar.js';
 import healthBar from '../prefabs/healthBar.js';
+import AudioManager from '/js/audioManager.js';
 
 export default class combatScene extends Phaser.Scene
 {
@@ -25,6 +26,14 @@ export default class combatScene extends Phaser.Scene
         this.load.image('totodile','combat_totodile.png');
         this.load.spritesheet('hoothoot','combat_hoothoot.png',
         {frameWidth:276,frameHeight:276});
+
+        this.load.setPath('assets/audio');
+        this.load.audio('combatMusic', 'Combat.wav');
+        this.load.setPath('assets/audio/attacks');
+        this.load.audio('tackle_sound', 'Tackle.wav');
+        this.load.audio('tail_whip_sound', 'TailWhip.wav');
+        this.load.audio('water_gun_sound', 'WaterGun.wav');
+        this.load.audio('wing_attack_sound', 'WingAttack.wav');
     }
 
     create()
@@ -52,27 +61,43 @@ export default class combatScene extends Phaser.Scene
 
         this.enemyBar = new healthBar(this, 160,97.5,240,12,100);
         this.playerBar = new healthBar(this, 480, 378, 240,12,100);
+
+        this.CreateAudio();
         
     }
 
-   
+    CreateAudio()
+    {
+        this.audioManager = new AudioManager(this);
+        this.audioManager.updateScene(this);
+
+        this.audioManager.stopSound('backgroundMusic');
+
+        this.audioManager.addSound('combatMusic', { loop: true, volume: 0.3 });
+        this.audioManager.playSound('combatMusic');
+
+        this.audioManager.addSound('tackle_sound', { loop: false, volume: 0.3 });
+        this.audioManager.addSound('tail_whip_sound', { loop: false, volume: 0.3 });
+        this.audioManager.addSound('water_gun_sound', { loop: false, volume: 0.3 });
+        this.audioManager.addSound('wing_attack_sound', { loop: false, volume: 0.3 });
+    }
 
     createMovements()
     {
-        this.tackle = new movement(this, pokemonPrefs.TACKLE_NAME, pokemonPrefs.TACKLE_TYPE, pokemonPrefs.TACKLE_CATEGORY,
+        this.tackle = new movement(this, 'tackle_sound', pokemonPrefs.TACKLE_NAME, pokemonPrefs.TACKLE_TYPE, pokemonPrefs.TACKLE_CATEGORY,
             pokemonPrefs.TACKLE_POWER, pokemonPrefs.TACKLE_ACCURACY, pokemonPrefs.TACKLE_PRIORITY, pokemonPrefs.TACKLE_PP
         );
 
-        this.tail_whip = new movement(this, pokemonPrefs.TAIL_WHIP_NAME, pokemonPrefs.TAIL_WHIP_TYPE, pokemonPrefs.TAIL_WHIP_CATEGORY,
+        this.tail_whip = new movement(this, 'tail_whip_sound', pokemonPrefs.TAIL_WHIP_NAME, pokemonPrefs.TAIL_WHIP_TYPE, pokemonPrefs.TAIL_WHIP_CATEGORY,
             pokemonPrefs.TAIL_WHIP_POWER, pokemonPrefs.TAIL_WHIP_ACCURACY, pokemonPrefs.TAIL_WHIP_PRIORITY,
             pokemonPrefs.TAIL_WHIP_PP, pokemonPrefs.TAIL_WHIP_STAT_AFFECTED
         );
 
-        this.water_gun = new movement(this, pokemonPrefs.WATER_GUN_NAME, pokemonPrefs.WATER_GUN_TYPE, pokemonPrefs.WATER_GUN_CATEGORY,
+        this.water_gun = new movement(this, 'water_gun_sound', pokemonPrefs.WATER_GUN_NAME, pokemonPrefs.WATER_GUN_TYPE, pokemonPrefs.WATER_GUN_CATEGORY,
             pokemonPrefs.WATER_GUN_POWER, pokemonPrefs.WATER_GUN_ACCURACY, pokemonPrefs.WATER_GUN_PRIORITY, pokemonPrefs.WATER_GUN_PP
         );
 
-        this.wing_attack = new movement(this, pokemonPrefs.WING_ATTACK_NAME, pokemonPrefs.WING_ATTACK_TYPE, pokemonPrefs.WING_ATTACK_CATEGORY,
+        this.wing_attack = new movement(this, 'wing_attack_sound', pokemonPrefs.WING_ATTACK_NAME, pokemonPrefs.WING_ATTACK_TYPE, pokemonPrefs.WING_ATTACK_CATEGORY,
             pokemonPrefs.WING_ATTACK_POWER, pokemonPrefs.WING_ATTACK_ACCURACY, pokemonPrefs.WING_ATTACK_PRIORITY, pokemonPrefs.WING_ATTACK_PP
         );
     }
@@ -90,7 +115,7 @@ export default class combatScene extends Phaser.Scene
 
     createHootHoot()
     {
-        var hoothoot_movements = [this.tackle, this.wing_attack];
+        var hoothoot_movements = [this.tackle, this.wing_attack, this.tail_whip];
 
         this.enemy_pokemon = new pokemon(this, "hoothoot", pokemonPrefs.enemyPokemonPosX, pokemonPrefs.enemyPokemonPosY, true, "HOOTHOOT", ["NORMAL", "FLYING"], 
             pokemonPrefs.HOOTHOOT_HEALTH, pokemonPrefs.HOOTHOOT_PHYSICAL_ATTACK, pokemonPrefs.HOOTHOOT_PHYSICAL_DEFENSE,
@@ -287,9 +312,11 @@ export default class combatScene extends Phaser.Scene
         this.deactiveButton();
 
         this.enemy_pokemon.attack(this.player_pokemon);
+        this.audioManager.playSound(this.enemy_pokemon.selected_movement.sound_key);
         this.updateUI();
         this.playerBar.decreaseHealthTo(this.player_pokemon.current_health, this.player_pokemon.health, () => {
-            this.player_pokemon.attack(this.enemy_pokemon);
+        this.player_pokemon.attack(this.enemy_pokemon);
+        this.audioManager.playSound(this.player_pokemon.selected_movement.sound_key);
             this.enemyBar.decreaseHealthTo(this.enemy_pokemon.current_health, this.enemy_pokemon.health, () => {
                 this.activeButton();
             });
@@ -303,8 +330,10 @@ export default class combatScene extends Phaser.Scene
         this.deactiveButton();
 
         this.player_pokemon.attack(this.enemy_pokemon);
+        this.audioManager.playSound(this.player_pokemon.selected_movement.sound_key);
         this.playerBar.decreaseHealthTo(this.player_pokemon.current_health, this.player_pokemon.health, () => {
             this.enemy_pokemon.attack(this.player_pokemon);
+            this.audioManager.playSound(this.enemy_pokemon.selected_movement.sound_key);
             this.updateUI();
             this.enemyBar.decreaseHealthTo(this.enemy_pokemon.current_health, this.enemy_pokemon.health, () => {
                 this.activeButton();
@@ -325,6 +354,9 @@ export default class combatScene extends Phaser.Scene
 
     returnToWorld(isEnemy)
     {
+        this.audioManager.stopAll();
+        this.audioManager.playSound('backgroundMusic');
+
         if(isEnemy)
             this.scene.start('tittle', { from: this.scene.key });
         else
