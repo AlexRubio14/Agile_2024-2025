@@ -109,12 +109,10 @@ export default class pokemon extends Phaser.GameObjects.Sprite
         console.log(this.name + " " + this.current_health)
         this.current_health -= damage;
         console.log(this.name + " " + this.current_health)
+
         if(this.current_health <= 0)
-        {
             this.current_health = 0;
-            this.die();
-            return;
-        }
+
         //llamar a una funcion de la escena que haga cosas visuales
     }
 
@@ -123,8 +121,19 @@ export default class pokemon extends Phaser.GameObjects.Sprite
         target_pokemon.physical_defense /= 2;
     }
 
+    checkIfDie()
+    {
+        if(this.current_health <= 0)
+        {
+            this.current_health = 0;
+            this.die();
+            return;
+        }
+    }
+
     die()
     {
+
         //llamar a una funcion de la escena q haga cosas visuales
         this.scene.returnToWorld(this.enemyPokemon); 
     }

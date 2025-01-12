@@ -24,6 +24,13 @@ export default class healthBar
         this.bgGraphics.clear();
         this.barGraphics.clear();
 
+        if(this.currentValue >= this.maxValue * 0.2 && this.currentValue <= this.maxValue / 2 ) {
+            this.color = 0xFFF700;
+        }
+        else if(this.currentValue <= this.maxValue * 0.2) {
+            this.color = 0xFF0000;
+        }
+
         // Draw the background
         this.bgGraphics.fillStyle(this.bgColor);
         this.bgGraphics.fillRect(this.x, this.y, this.width, this.height);
@@ -41,6 +48,7 @@ export default class healthBar
     }
 
     decreaseHealthTo(newHealth, maxHealth, onComplete = null, duration = 1000) {
+ 
         // Clamp the new health value to valid range
         newHealth = Phaser.Math.Clamp(newHealth, 0, maxHealth);
     

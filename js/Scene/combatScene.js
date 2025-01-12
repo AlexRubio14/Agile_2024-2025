@@ -5,12 +5,14 @@ import button from '/js/prefabs/button.js';
 import ValueBar from '../prefabs/healthBar.js';
 import healthBar from '../prefabs/healthBar.js';
 import AudioManager from '/js/audioManager.js';
+import dialogueCombat from '../prefabs/dialogueCombat.js';
 
 export default class combatScene extends Phaser.Scene
 {
     constructor()
     {
         super({key:'Combat'});
+        this.handleKeyPress = null
     }
 
     preload()
@@ -24,6 +26,7 @@ export default class combatScene extends Phaser.Scene
         this.load.image('combat_gold','combat_gold.png');
         this.load.image('combat_trainer','combat_trainer.png');
         this.load.image('totodile','combat_totodile.png');
+        this.load.image('dialogue_box', 'dialogue_box.png')
         this.load.spritesheet('hoothoot','combat_hoothoot.png',
         {frameWidth:276,frameHeight:276});
 
@@ -188,6 +191,8 @@ export default class combatScene extends Phaser.Scene
 
         this.buttonSelected = this.button0;
         this.buttonSelected.selectButton();
+
+        this.combatText = new dialogueCombat(this,10,495,"")
     }
 
     deactiveButton()
@@ -312,16 +317,28 @@ export default class combatScene extends Phaser.Scene
         this.deactiveButton();
 
         this.enemy_pokemon.attack(this.player_pokemon);
+        this.combatText.ActivateText(this.enemy_pokemon.name, this.enemy_pokemon.selected_movement.name)
         this.audioManager.playSound(this.enemy_pokemon.selected_movement.sound_key);
         this.updateUI();
+
+
         this.playerBar.decreaseHealthTo(this.player_pokemon.current_health, this.player_pokemon.health, () => {
-        this.player_pokemon.attack(this.enemy_pokemon);
-        this.audioManager.playSound(this.player_pokemon.selected_movement.sound_key);
-            this.enemyBar.decreaseHealthTo(this.enemy_pokemon.current_health, this.enemy_pokemon.health, () => {
-                this.activeButton();
-            });
-        });
-        
+            this.player_pokemon.checkIfDie();
+            this.player_pokemon.attack(this.enemy_pokemon);
+            this.audioManager.playSound(this.player_pokemon.selected_movement.sound_key);
+            this.updateUI();
+            
+            this.waitForSpaceInput(() => {
+
+                this.combatText.DeactivateText();
+                this.combatText.ActivateText(this.player_pokemon.name, this.player_pokemon.selected_movement.name)
+                this.enemyBar.decreaseHealthTo(this.enemy_pokemon.current_health, this.enemy_pokemon.health, () => {
+                    this.enemy_pokemon.checkIfDie()
+                    this.activeButton();
+                    this.combatText.DeactivateText()
+                });
+            })
+         });
 
     }
 
@@ -330,16 +347,46 @@ export default class combatScene extends Phaser.Scene
         this.deactiveButton();
 
         this.player_pokemon.attack(this.enemy_pokemon);
+        this.combatText.ActivateText(this.player_pokemon.name, this.player_pokemon.selected_movement.name)
         this.audioManager.playSound(this.player_pokemon.selected_movement.sound_key);
+        this.updateUI();
+
+
         this.playerBar.decreaseHealthTo(this.player_pokemon.current_health, this.player_pokemon.health, () => {
+
+            this.enemy_pokemon.checkIfDie()
             this.enemy_pokemon.attack(this.player_pokemon);
             this.audioManager.playSound(this.enemy_pokemon.selected_movement.sound_key);
             this.updateUI();
-            this.enemyBar.decreaseHealthTo(this.enemy_pokemon.current_health, this.enemy_pokemon.health, () => {
-                this.activeButton();
-            });
+
+            this.waitForSpaceInput(() => {
+                
+                this.combatText.DeactivateText()
+                this.combatText.ActivateText(this.enemy_pokemon.name, this.enemy_pokemon.selected_movement.name)
+                this.enemyBar.decreaseHealthTo(this.enemy_pokemon.current_health, this.enemy_pokemon.health, () => {
+                    this.player_pokemon.checkIfDie()
+                    this.activeButton();
+                    this.combatText.DeactivateText()
+                });
+            })
         });
         
+    }
+
+    waitForSpaceInput(callback)
+    {
+        this.handleKeyPress = (event) => {
+            if (event.code === "Space") {
+                // Remove the event listener after detecting the space bar
+                document.removeEventListener("keydown", this.handleKeyPress);
+    
+                // Execute the next step
+                callback();
+            }
+        };
+    
+        // Add the event listener for the space bar
+        document.addEventListener("keydown", this.handleKeyPress);
     }
 
     endTurn()
@@ -356,6 +403,10 @@ export default class combatScene extends Phaser.Scene
     {
         this.audioManager.stopAll();
         this.audioManager.playSound('backgroundMusic');
+
+        if (this.handleKeyPress) {
+            document.removeEventListener("keydown", this.handleKeyPress);
+        }
 
         if(isEnemy)
             this.scene.start('tittle', { from: this.scene.key });
