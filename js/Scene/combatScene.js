@@ -27,8 +27,15 @@ export default class combatScene extends Phaser.Scene
         this.load.image('combat_trainer','combat_trainer.png');
         this.load.image('totodile','combat_totodile.png');
         this.load.image('dialogue_box', 'dialogue_box.png')
+        this.load.image('roar_attack','roar.png')
         this.load.spritesheet('hoothoot','combat_hoothoot.png',
         {frameWidth:276,frameHeight:276});
+        this.load.spritesheet('air_attack','air_attack.png',
+            {frameWidth:16,frameHeight:8});
+        this.load.spritesheet('water_attack','water_attack.png',
+            {frameWidth:16,frameHeight:16});
+        this.load.spritesheet('tackle_attack','tackle.png',
+            {frameWidth:32,frameHeight:32});
 
         this.load.setPath('assets/audio');
         this.load.audio('combatMusic', 'Combat.wav');
@@ -65,8 +72,40 @@ export default class combatScene extends Phaser.Scene
         this.enemyBar = new healthBar(this, 160,97.5,240,12,100);
         this.playerBar = new healthBar(this, 480, 378, 240,12,100);
 
+        this.createMovementsAnims()
         this.CreateAudio();
         
+    }
+
+    createMovementsAnims()
+    {
+        this.anims.create(
+                {
+                    key: 'airCut',
+                    frames: this.anims.generateFrameNumbers('air_attack', 
+                        {start:0, end:5}), 
+                    frameRate: 10,
+                    repeat:-1
+                }
+                );
+            this.anims.create(
+                {
+                    key: 'waterAttack',
+                    frames: this.anims.generateFrameNumbers('water_attack', 
+                        {start:0, end:3}), 
+                    frameRate: 10,
+                    repeat:-1
+                }
+                );
+            this.anims.create(
+                {
+                    key: 'tackleAttack',
+                    frames: this.anims.generateFrameNumbers('tackle_attack', 
+                        {start:0, end:3}), 
+                    frameRate: 10,
+                    repeat:-1
+                }
+                );
     }
 
     CreateAudio()
@@ -88,7 +127,7 @@ export default class combatScene extends Phaser.Scene
     createMovements()
     {
         this.tackle = new movement(this, 'tackle_sound', pokemonPrefs.TACKLE_NAME, pokemonPrefs.TACKLE_TYPE, pokemonPrefs.TACKLE_CATEGORY,
-            pokemonPrefs.TACKLE_POWER, pokemonPrefs.TACKLE_ACCURACY, pokemonPrefs.TACKLE_PRIORITY, pokemonPrefs.TACKLE_PP
+            pokemonPrefs.TACKLE_POWER, pokemonPrefs.TACKLE_ACCURACY, pokemonPrefs.TACKLE_PRIORITY, pokemonPrefs.TACKLE_PP,
         );
 
         this.tail_whip = new movement(this, 'tail_whip_sound', pokemonPrefs.TAIL_WHIP_NAME, pokemonPrefs.TAIL_WHIP_TYPE, pokemonPrefs.TAIL_WHIP_CATEGORY,
@@ -97,11 +136,11 @@ export default class combatScene extends Phaser.Scene
         );
 
         this.water_gun = new movement(this, 'water_gun_sound', pokemonPrefs.WATER_GUN_NAME, pokemonPrefs.WATER_GUN_TYPE, pokemonPrefs.WATER_GUN_CATEGORY,
-            pokemonPrefs.WATER_GUN_POWER, pokemonPrefs.WATER_GUN_ACCURACY, pokemonPrefs.WATER_GUN_PRIORITY, pokemonPrefs.WATER_GUN_PP
+            pokemonPrefs.WATER_GUN_POWER, pokemonPrefs.WATER_GUN_ACCURACY, pokemonPrefs.WATER_GUN_PRIORITY, pokemonPrefs.WATER_GUN_PP,
         );
 
         this.wing_attack = new movement(this, 'wing_attack_sound', pokemonPrefs.WING_ATTACK_NAME, pokemonPrefs.WING_ATTACK_TYPE, pokemonPrefs.WING_ATTACK_CATEGORY,
-            pokemonPrefs.WING_ATTACK_POWER, pokemonPrefs.WING_ATTACK_ACCURACY, pokemonPrefs.WING_ATTACK_PRIORITY, pokemonPrefs.WING_ATTACK_PP
+            pokemonPrefs.WING_ATTACK_POWER, pokemonPrefs.WING_ATTACK_ACCURACY, pokemonPrefs.WING_ATTACK_PRIORITY, pokemonPrefs.WING_ATTACK_PP,
         );
     }
 
@@ -269,6 +308,10 @@ export default class combatScene extends Phaser.Scene
                 this.combat();
             }
         }
+
+        this.air.anims.play('airCut',true);    
+        this.water.anims.play('waterAttack',true);
+        this.tackle.anims.play('tackleAttack',true);  
     }
 
     combat()
