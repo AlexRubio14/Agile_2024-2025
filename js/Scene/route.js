@@ -104,11 +104,15 @@ export default class Route extends Phaser.Scene
 
     handleDoorCollision() {
         this.scene.start('city', { from: this.scene.key });
+        this.audioManager.stopAll();
+        this.audioManager.playSound('cityMusic');
     }
 
     handleNPCCombatInteraction()
     {
         this.scene.start('Combat', { from: this.scene.key });
+        this.audioManager.stopAll();
+        this.audioManager.playSound('combatMusic');
     }
 
 }

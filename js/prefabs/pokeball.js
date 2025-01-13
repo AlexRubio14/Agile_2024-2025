@@ -55,6 +55,7 @@ export default class Pokeball extends Phaser.GameObjects.Sprite
         {
             this.dialogue.ActivateText();
             this.scene.player.isInteracting = true;
+            this.scene.playPokeballSound();
         }
         else 
         {
