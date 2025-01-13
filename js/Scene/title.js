@@ -22,7 +22,20 @@ export default class Tittle extends Phaser.Scene
 
             
         this.load.setPath('assets/audio');
-        this.load.audio('backgroundMusic', 'NewBarkTown.wav');
+        this.load.audio('cityMusic', 'NewBarkTown.wav');
+        this.load.audio('routeMusic', 'RouteMusic.mp3');
+        this.load.audio('combatMusic', 'Combat.wav');
+        this.load.audio('introMusic', 'IntroMusic.mp3');
+
+        this.load.setPath('assets/audio/attacks');
+        this.load.audio('tackle_sound', 'Tackle.wav');
+        this.load.audio('tail_whip_sound', 'TailWhip.wav');
+        this.load.audio('water_gun_sound', 'WaterGun.wav');
+        this.load.audio('wing_attack_sound', 'WingAttack.wav');
+
+        this.load.setPath('assets/audio/sounds');
+        this.load.audio('obtain_pokemon_sound', 'fanfare.wav');
+        this.load.audio('recovery_sound', 'fanfare.wav');
     }
 
     create()
@@ -51,8 +64,21 @@ export default class Tittle extends Phaser.Scene
         this.audioManager = new AudioManager(this);
         this.audioManager.updateScene(this);
 
-        this.audioManager.addSound('backgroundMusic', { loop: true, volume: 0.3 });
-        this.audioManager.playSound('backgroundMusic');
+        this.audioManager.addSound('cityMusic', { loop: true, volume: 0.3 });
+        this.audioManager.addSound('titleMusic', { loop: true, volume: 0.3 });
+        this.audioManager.addSound('combatMusic', { loop: true, volume: 0.3 });
+
+        this.audioManager.addSound('tackle_sound', { loop: false, volume: 0.3 });
+        this.audioManager.addSound('tail_whip_sound', { loop: false, volume: 0.3 });
+        this.audioManager.addSound('water_gun_sound', { loop: false, volume: 0.3 });
+        this.audioManager.addSound('wing_attack_sound', { loop: false, volume: 0.3 });
+        this.audioManager.addSound('wing_attack_sound', { loop: false, volume: 0.3 });
+        
+        this.audioManager.addSound('wing_attack_sound', { loop: false, volume: 0.3 });
+        this.audioManager.addSound('obtain_pokemon', { loop: false, volume: 0.3 });
+        this.audioManager.addSound('recovery', { loop: false, volume: 0.3 });
+
+        this.audioManager.playSound('titleMusic');
     }
 
     LoadAnimation()

@@ -40,14 +40,6 @@ export default class combatScene extends Phaser.Scene
         this.airAttackKeyname = 'airCut'
         this.waterAttackKeyname = 'waterAttack'
         this.tackleAttackKeyname = 'tackleAttack'
-
-        this.load.setPath('assets/audio');
-        this.load.audio('combatMusic', 'Combat.wav');
-        this.load.setPath('assets/audio/attacks');
-        this.load.audio('tackle_sound', 'Tackle.wav');
-        this.load.audio('tail_whip_sound', 'TailWhip.wav');
-        this.load.audio('water_gun_sound', 'WaterGun.wav');
-        this.load.audio('wing_attack_sound', 'WingAttack.wav');
     }
 
     create()
@@ -175,16 +167,6 @@ export default class combatScene extends Phaser.Scene
     {
         this.audioManager = new AudioManager(this);
         this.audioManager.updateScene(this);
-
-        this.audioManager.stopSound('backgroundMusic');
-
-        this.audioManager.addSound('combatMusic', { loop: true, volume: 0.3 });
-        this.audioManager.playSound('combatMusic');
-
-        this.audioManager.addSound('tackle_sound', { loop: false, volume: 0.3 });
-        this.audioManager.addSound('tail_whip_sound', { loop: false, volume: 0.3 });
-        this.audioManager.addSound('water_gun_sound', { loop: false, volume: 0.3 });
-        this.audioManager.addSound('wing_attack_sound', { loop: false, volume: 0.3 });
     }
 
     createMovements()
@@ -508,16 +490,25 @@ export default class combatScene extends Phaser.Scene
 
     returnToWorld(isEnemy)
     {
-        this.audioManager.stopAll();
-        this.audioManager.playSound('backgroundMusic');
-
         if (this.handleKeyPress) {
             document.removeEventListener("keydown", this.handleKeyPress);
         }
 
         if(isEnemy)
+        {
             this.scene.start('tittle', { from: this.scene.key });
+
+            this.audioManager.stopAll();
+            this.audioManager.playSound('titleMusic');
+            gamePrefs.hasPokemon = false;
+        }
         else
+        {
             this.scene.start('laboratory', { from: this.scene.key });
+
+            this.audioManager.stopAll();
+            this.audioManager.playSound('cityMusic');
+            this.audioManager.playSound('recovery_sound');
+        }
     }
 }

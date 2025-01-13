@@ -3,6 +3,7 @@ import player from '/js/prefabs/player.js';
 import NPC from '/js/prefabs/npc.js';
 import Pokeball from '/js/prefabs/pokeball.js';
 import dialogue from '/js/prefabs/dialogue.js';
+import AudioManager from '../audioManager.js';
 
 export default class Laboratory extends Phaser.Scene
 {
@@ -37,6 +38,13 @@ export default class Laboratory extends Phaser.Scene
         this.CreatePlayer();
         this.AddCollisions();
         this.CreateNPC();
+        this.CreateAudio();
+    }
+
+    CreateAudio()
+    {
+        this.audioManager = new AudioManager(this);
+        this.audioManager.updateScene(this);
     }
 
     LoadMap()
@@ -118,6 +126,11 @@ export default class Laboratory extends Phaser.Scene
 
     handleDoorCollision() {
         this.scene.start('city', { from: this.scene.key });
+    }
+
+    playPokeballSound()
+    {
+        this.audioManager.playSound('obtain_pokemon_sound');
     }
 
     destroyPokeball()

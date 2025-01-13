@@ -2,6 +2,7 @@ import {scenePrefs, gamePrefs} from '../globals.js';
 import player from '/js/prefabs/player.js';
 import NPC from '/js/prefabs/npc.js';
 import dialogue from '/js/prefabs/dialogue.js';
+import AudioManager from '/js/audioManager.js';
 
 export default class City extends Phaser.Scene
 {
@@ -47,54 +48,42 @@ export default class City extends Phaser.Scene
         this.CreatePlayer();
         this.AddCollisions();
         this.CreateNPC();
-
-        // this.air = this.add.sprite(81, 100,'air_attack');
-        // this.water = this.add.sprite(97, 100,'water_attack');
-        // this.tackle = this.add.sprite(129, 100,'tackle_attack');
-        // this.roar = this.add.sprite(161,100,'roar_attack');
-
-        //this.LoadAnimations();
-        //this.loadSounds();
-        //this.newBarkTown.play();
+        this.CreateAudio();
     }
 
-        LoadAnimations()
-        {
+    CreateAudio()
+    {
+        this.audioManager = new AudioManager(this);
+        this.audioManager.updateScene(this);
+    }
 
-            this.anims.create(
-                {
-                    key: 'airCut',
-                    frames: this.anims.generateFrameNumbers('air_attack', 
-                        {start:0, end:5}), 
-                    frameRate: 10,
-                    repeat:-1
-                }
-                );
-            this.anims.create(
-                {
-                    key: 'waterAttack',
-                    frames: this.anims.generateFrameNumbers('water_attack', 
-                        {start:0, end:3}), 
-                    frameRate: 10,
-                    repeat:-1
-                }
-                );
-            this.anims.create(
-                {
-                    key: 'tackleAttack',
-                    frames: this.anims.generateFrameNumbers('tackle_attack', 
-                        {start:0, end:3}), 
-                    frameRate: 10,
-                    repeat:-1
-                }
-                );
-        }
+    LoadAnimations()
+    {
 
-    update()
-    { 
-        // this.air.anims.play('airCut',true);    
-        // this.water.anims.play('waterAttack',true);
-        // this.tackle.anims.play('tackleAttack',true);                  
+        this.anims.create(
+            {
+                key: 'airCut',
+                frames: this.anims.generateFrameNumbers('air_attack', 
+                    {start:0, end:5}), 
+                frameRate: 10,
+                repeat:-1
+            });
+        this.anims.create(
+            {
+                key: 'waterAttack',
+                frames: this.anims.generateFrameNumbers('water_attack', 
+                    {start:0, end:3}), 
+                frameRate: 10,
+                repeat:-1
+            });
+        this.anims.create(
+            {
+                key: 'tackleAttack',
+                frames: this.anims.generateFrameNumbers('tackle_attack', 
+                    {start:0, end:3}), 
+                frameRate: 10,
+                repeat:-1
+            });
     }
 
     LoadMap()
@@ -207,19 +196,14 @@ export default class City extends Phaser.Scene
     handleRouteDoorCollision()
     {
         this.scene.start('route', { from: this.scene.key });
+        this.audioManager.stopAll();
+        this.audioManager.playSound('routeMusic');
     }
 
     handleNPCDoorCollision()
     {
         this.scene.start('npchouse', { from: this.scene.key });
     }
-
-    loadSounds()
-    {
-        //this.newBarkTown = this.sound.add('newBarkTown');
-    }
-
-
 }
 
 
