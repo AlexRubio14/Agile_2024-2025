@@ -27,8 +27,19 @@ export default class combatScene extends Phaser.Scene
         this.load.image('combat_trainer','combat_trainer.png');
         this.load.image('totodile','combat_totodile.png');
         this.load.image('dialogue_box', 'dialogue_box.png')
+        this.load.image('roar_attack','roar.png')
         this.load.spritesheet('hoothoot','combat_hoothoot.png',
         {frameWidth:276,frameHeight:276});
+        this.load.spritesheet('air_attack','air_attack.png',
+            {frameWidth:16,frameHeight:8});
+        this.load.spritesheet('water_attack','water_attack.png',
+            {frameWidth:16,frameHeight:16});
+        this.load.spritesheet('tackle_attack','tackle.png',
+            {frameWidth:32,frameHeight:32});
+
+        this.airAttackKeyname = 'airCut'
+        this.waterAttackKeyname = 'waterAttack'
+        this.tackleAttackKeyname = 'tackleAttack'
 
         this.load.setPath('assets/audio');
         this.load.audio('combatMusic', 'Combat.wav');
@@ -43,8 +54,7 @@ export default class combatScene extends Phaser.Scene
     {
         this.isUIActive = true;
         this.uiPlayerCurrentHp = null;
-
-        
+        this.pokemonIsAttacking = false
 
         this.combatBg = this.add.sprite(0,0,'combat_bg').setOrigin(0).setScale(5);
         //crear trainer enemigo
@@ -62,11 +72,103 @@ export default class combatScene extends Phaser.Scene
 
         this.cursors = this.input.keyboard.createCursorKeys();
 
+        this.air = this.add.sprite(-81, 100,'air_attack').setScale(7);
+        this.water = this.add.sprite(-97, 100,'water_attack').setScale(7);
+        this.tackle = this.add.sprite(-129, 100,'tackle_attack').setScale(2);
+        this.tail_whip = this.add.sprite(-161,100,'roar_attack').setScale(4);
+
         this.enemyBar = new healthBar(this, 160,97.5,240,12,100);
         this.playerBar = new healthBar(this, 480, 378, 240,12,100);
 
+        this.createMovementsAnims()
         this.CreateAudio();
         
+    }
+
+    createMovementsAnims()
+    {
+        this.anims.create(
+                {
+                    key: this.airAttackKeyname,
+                    frames: this.anims.generateFrameNumbers('air_attack', 
+                        {start:0, end:5}), 
+                    frameRate: 10,
+                    repeat:0
+                }
+                );
+            this.anims.create(
+                {
+                    key: this.waterAttackKeyname,
+                    frames: this.anims.generateFrameNumbers('water_attack', 
+                        {start:0, end:3}), 
+                    frameRate: 10,
+                    repeat:0
+                }
+                );
+            this.anims.create(
+                {
+                    key: this.tackleAttackKeyname,
+                    frames: this.anims.generateFrameNumbers('tackle_attack', 
+                        {start:0, end:3}), 
+                    frameRate: 10,
+                    repeat:2
+                }
+                );
+    }
+
+    playMovementAnim(selectedMovementName, pokemonAttacksPos, pokemonReceivesAttackPos) 
+    {
+        if(selectedMovementName == pokemonPrefs.TAIL_WHIP_NAME)
+        {
+            this.pokemonIsAttacking = true
+            this.tail_whip.setPosition(pokemonAttacksPos.x + 100, pokemonAttacksPos.y)
+            this.time.delayedCall(1000, () => {
+                // Move the image off the screen (for example, to the right)
+                this.tail_whip.setPosition(-100,300);
+                this.pokemonIsAttacking = false;
+
+            });
+            return;
+        }
+
+        if(selectedMovementName == pokemonPrefs.TACKLE_NAME)
+        {
+            this.tackle.setPosition(pokemonReceivesAttackPos.x, pokemonReceivesAttackPos.y)
+            this.tackle.play(this.tackleAttackKeyname,true)
+            this.tackle.on('animationcomplete', (animation) => {
+                if (animation.key === this.tackleAttackKeyname) {
+                    // After the tackle animation finishes, change the position
+                    this.tackle.setPosition(-100, 300);  // Set the new position after the animation
+                }
+            });
+            return;
+        }
+
+        if(selectedMovementName == pokemonPrefs.WATER_GUN_NAME) 
+        {
+            this.water.setPosition(pokemonReceivesAttackPos.x, pokemonReceivesAttackPos.y)
+            this.water.play(this.waterAttackKeyname,true)
+            this.water.on('animationcomplete', (animation) => {
+                if (animation.key === this.waterAttackKeyname) {
+                    // After the water_gun animation finishes, change the position
+                    this.water.setPosition(-100, 300);  // Set the new position after the animation
+                }
+            });
+            return;
+        }
+
+        if(selectedMovementName == pokemonPrefs.WING_ATTACK_NAME) 
+        {
+            this.air.setPosition(pokemonReceivesAttackPos.x, pokemonReceivesAttackPos.y)
+            this.air.play(this.airAttackKeyname,true)
+            this.air.on('animationcomplete', (animation) => {
+                if (animation.key === this.airAttackKeyname) {
+                    // After the water_gun animation finishes, change the position
+                    this.air.setPosition(-100, 300);  // Set the new position after the animation
+                }
+            });
+            return;
+        }
     }
 
     CreateAudio()
@@ -88,7 +190,7 @@ export default class combatScene extends Phaser.Scene
     createMovements()
     {
         this.tackle = new movement(this, 'tackle_sound', pokemonPrefs.TACKLE_NAME, pokemonPrefs.TACKLE_TYPE, pokemonPrefs.TACKLE_CATEGORY,
-            pokemonPrefs.TACKLE_POWER, pokemonPrefs.TACKLE_ACCURACY, pokemonPrefs.TACKLE_PRIORITY, pokemonPrefs.TACKLE_PP
+            pokemonPrefs.TACKLE_POWER, pokemonPrefs.TACKLE_ACCURACY, pokemonPrefs.TACKLE_PRIORITY, pokemonPrefs.TACKLE_PP, this.tackleAttackKeyname
         );
 
         this.tail_whip = new movement(this, 'tail_whip_sound', pokemonPrefs.TAIL_WHIP_NAME, pokemonPrefs.TAIL_WHIP_TYPE, pokemonPrefs.TAIL_WHIP_CATEGORY,
@@ -97,11 +199,11 @@ export default class combatScene extends Phaser.Scene
         );
 
         this.water_gun = new movement(this, 'water_gun_sound', pokemonPrefs.WATER_GUN_NAME, pokemonPrefs.WATER_GUN_TYPE, pokemonPrefs.WATER_GUN_CATEGORY,
-            pokemonPrefs.WATER_GUN_POWER, pokemonPrefs.WATER_GUN_ACCURACY, pokemonPrefs.WATER_GUN_PRIORITY, pokemonPrefs.WATER_GUN_PP
+            pokemonPrefs.WATER_GUN_POWER, pokemonPrefs.WATER_GUN_ACCURACY, pokemonPrefs.WATER_GUN_PRIORITY, pokemonPrefs.WATER_GUN_PP, this.waterAttackKeyname
         );
 
         this.wing_attack = new movement(this, 'wing_attack_sound', pokemonPrefs.WING_ATTACK_NAME, pokemonPrefs.WING_ATTACK_TYPE, pokemonPrefs.WING_ATTACK_CATEGORY,
-            pokemonPrefs.WING_ATTACK_POWER, pokemonPrefs.WING_ATTACK_ACCURACY, pokemonPrefs.WING_ATTACK_PRIORITY, pokemonPrefs.WING_ATTACK_PP
+            pokemonPrefs.WING_ATTACK_POWER, pokemonPrefs.WING_ATTACK_ACCURACY, pokemonPrefs.WING_ATTACK_PRIORITY, pokemonPrefs.WING_ATTACK_PP, this.airAttackKeyname
         );
     }
 
@@ -268,7 +370,7 @@ export default class combatScene extends Phaser.Scene
                 this.player_pokemon.selected_movement = this.player_pokemon.attacks_array[this.buttonSelected.id];
                 this.combat();
             }
-        }
+        }  
     }
 
     combat()
@@ -317,6 +419,7 @@ export default class combatScene extends Phaser.Scene
         this.deactiveButton();
 
         this.enemy_pokemon.attack(this.player_pokemon);
+        this.playMovementAnim(this.enemy_pokemon.selected_movement.name, this.enemy_pokemon, this.player_pokemon)
         this.combatText.ActivateText(this.enemy_pokemon.name, this.enemy_pokemon.selected_movement.name)
         this.audioManager.playSound(this.enemy_pokemon.selected_movement.sound_key);
         this.updateUI();
@@ -324,12 +427,14 @@ export default class combatScene extends Phaser.Scene
 
         this.playerBar.decreaseHealthTo(this.player_pokemon.current_health, this.player_pokemon.health, () => {
             this.player_pokemon.checkIfDie();
-            this.player_pokemon.attack(this.enemy_pokemon);
-            this.audioManager.playSound(this.player_pokemon.selected_movement.sound_key);
-            this.updateUI();
+            
             
             this.waitForSpaceInput(() => {
 
+                this.player_pokemon.attack(this.enemy_pokemon);
+                this.playMovementAnim(this.player_pokemon.selected_movement.name, this.player_pokemon, this.enemy_pokemon)
+                this.audioManager.playSound(this.player_pokemon.selected_movement.sound_key);
+                this.updateUI();
                 this.combatText.DeactivateText();
                 this.combatText.ActivateText(this.player_pokemon.name, this.player_pokemon.selected_movement.name)
                 this.enemyBar.decreaseHealthTo(this.enemy_pokemon.current_health, this.enemy_pokemon.health, () => {
@@ -347,6 +452,7 @@ export default class combatScene extends Phaser.Scene
         this.deactiveButton();
 
         this.player_pokemon.attack(this.enemy_pokemon);
+        this.playMovementAnim(this.player_pokemon.selected_movement.name, this.player_pokemon, this.enemy_pokemon)
         this.combatText.ActivateText(this.player_pokemon.name, this.player_pokemon.selected_movement.name)
         this.audioManager.playSound(this.player_pokemon.selected_movement.sound_key);
         this.updateUI();
@@ -355,12 +461,13 @@ export default class combatScene extends Phaser.Scene
         this.playerBar.decreaseHealthTo(this.player_pokemon.current_health, this.player_pokemon.health, () => {
 
             this.enemy_pokemon.checkIfDie()
-            this.enemy_pokemon.attack(this.player_pokemon);
-            this.audioManager.playSound(this.enemy_pokemon.selected_movement.sound_key);
-            this.updateUI();
+            
 
             this.waitForSpaceInput(() => {
-                
+                this.enemy_pokemon.attack(this.player_pokemon);
+                this.playMovementAnim(this.enemy_pokemon.selected_movement.name, this.enemy_pokemon, this.player_pokemon)
+                this.audioManager.playSound(this.enemy_pokemon.selected_movement.sound_key);
+                this.updateUI();
                 this.combatText.DeactivateText()
                 this.combatText.ActivateText(this.enemy_pokemon.name, this.enemy_pokemon.selected_movement.name)
                 this.enemyBar.decreaseHealthTo(this.enemy_pokemon.current_health, this.enemy_pokemon.health, () => {
@@ -376,7 +483,7 @@ export default class combatScene extends Phaser.Scene
     waitForSpaceInput(callback)
     {
         this.handleKeyPress = (event) => {
-            if (event.code === "Space") {
+            if (event.code === "Space" && !this.pokemonIsAttacking) {
                 // Remove the event listener after detecting the space bar
                 document.removeEventListener("keydown", this.handleKeyPress);
     
