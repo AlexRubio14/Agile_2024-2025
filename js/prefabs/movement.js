@@ -1,6 +1,6 @@
 export default class movement extends Phaser.GameObjects.GameObject
 {
-    constructor(_scene, _sound_key, _name, _type, _category, _power, _accuracy, _priority, _pp,_stat_affected = null)
+    constructor(_scene, _sound_key, _name, _type, _category, _power, _accuracy, _priority, _animKeyname,_pp,_stat_affected = null)
     {
         super(_scene, _name);
         this.scene = _scene;
@@ -15,5 +15,6 @@ export default class movement extends Phaser.GameObjects.GameObject
         this.priority = _priority;
         this.pp = _pp;
         this.stat_affected = _stat_affected;
+        this.animKeyname = _animKeyname
     }
 }
