@@ -12,7 +12,7 @@ export default class Starters extends Phaser.Scene
         this.load.setPath('assets/sprites');
         this.load.image('cinda', 'cinda.png');
         this.load.image('chicorita', 'chicorita.png');
-        this.load.image('totodile', 'totodile.png');
+        this.load.image('totodileStarter', 'totodile.png');
         this.load.spritesheet('charizard','charizard.png',
             {frameWidth:72,frameHeight:64});
         this.load.spritesheet('fire','fire.png',
@@ -25,7 +25,7 @@ export default class Starters extends Phaser.Scene
         this.rectangle = this.add.rectangle(0, 0, this.scale.width, this.scale.height, 0xffffff).setOrigin(0).setAlpha(1);
 
         this.cinda = this.add.image(-10,50,'cinda').setOrigin(0).setVisible(false);
-        this.totodile = this.add.image(50,50,'totodile').setOrigin(0).setVisible(false);
+        this.totodile = this.add.image(50,50,'totodileStarter').setOrigin(0).setVisible(false);
         this.chicorita = this.add.image(110,50,'chicorita').setOrigin(0);
         this.charizard = this.add.sprite(80,150,'charizard').setOrigin(0);
 
