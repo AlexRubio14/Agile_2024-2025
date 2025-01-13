@@ -181,16 +181,19 @@ export default class City extends Phaser.Scene
 
     handlePlayerHouseDoorCollision() {
         this.scene.start('playerHouseF0', { from: this.scene.key });
+        this.audioManager.playSound('door_sound');
     }
 
     handleLabDoorCollision()
     {
         this.scene.start('laboratory', { from: this.scene.key });
+        this.audioManager.playSound('door_sound');
     }
 
     handleElmHouseDoorCollision()
     {
         this.scene.start('elmhouse', { from: this.scene.key });
+        this.audioManager.playSound('door_sound');
     }
 
     handleRouteDoorCollision()
@@ -203,6 +206,7 @@ export default class City extends Phaser.Scene
     handleNPCDoorCollision()
     {
         this.scene.start('npchouse', { from: this.scene.key });
+        this.audioManager.playSound('door_sound');
     }
 }
 

@@ -1,3 +1,5 @@
+import AudioManager from '/js/audioManager.js';
+
 export default class Animaiton extends Phaser.Scene
 {
     constructor()
@@ -23,10 +25,30 @@ export default class Animaiton extends Phaser.Scene
         this.load.spritesheet('lapras','lapras.png',
             {frameWidth:48,frameHeight:48});
 
+        this.load.setPath('assets/audio/music');
+        this.load.audio('cityMusic', 'NewBarkTown.wav');
+        this.load.audio('routeMusic', 'RouteMusic.mp3');
+        this.load.audio('combatMusic', 'Combat.wav');
+        this.load.audio('titleMusic', 'IntroMusic.mp3');
+    
+        this.load.setPath('assets/audio/attacks');
+        this.load.audio('tackle_sound', 'Tackle.wav');
+        this.load.audio('tail_whip_sound', 'TailWhip.wav');
+        this.load.audio('water_gun_sound', 'WaterGun.wav');
+        this.load.audio('wing_attack_sound', 'WingAttack.wav');
+    
+        this.load.setPath('assets/audio/sounds');
+        this.load.audio('obtain_pokemon_sound', 'item_found.mp3');
+        this.load.audio('recovery_sound', 'heal.wav');
+        this.load.audio('door_sound', 'door.wav');
+
     }
 
     create()
     {
+        this.cursors = this.input.keyboard.createCursorKeys();
+
+        this.CreateAudio();
 
         this.secondSky = this.physics.add.image(354, 0,'sky').setOrigin(0);
         this.sky = this.physics.add.image(-98, 0,'sky').setOrigin(0);
@@ -50,8 +72,6 @@ export default class Animaiton extends Phaser.Scene
         this.magikarp2 = this.physics.add.sprite(-550,140,'magikarp');
         this.magikarp3 = this.physics.add.sprite(-600,165,'magikarp');
         this.magikarp4 = this.physics.add.sprite(-700,155,'magikarp');
-
-
 
         this.cameras.main.setBounds(0, 0, 256, 392); 
         this.cameras.main.setSize(158, 150);        
@@ -80,7 +100,6 @@ export default class Animaiton extends Phaser.Scene
 
         this.lapras.play('laprasAnimation');
     
-
         this.time.addEvent({
             delay: 1000, 
             callback: this.createBuble, 
@@ -89,6 +108,27 @@ export default class Animaiton extends Phaser.Scene
         });
     }
 
+    CreateAudio()
+    {
+        this.audioManager = new AudioManager(this);
+        this.audioManager.updateScene(this);
+
+        this.audioManager.addSound('cityMusic', { loop: true, volume: 0.15 });
+        this.audioManager.addSound('titleMusic', { loop: true, volume: 0.15 });
+        this.audioManager.addSound('combatMusic', { loop: true, volume: 0.15 });
+        this.audioManager.addSound('routeMusic', { loop: true, volume: 0.15 });
+
+        this.audioManager.addSound('tackle_sound', { loop: false, volume: 0.3 });
+        this.audioManager.addSound('tail_whip_sound', { loop: false, volume: 0.3 });
+        this.audioManager.addSound('water_gun_sound', { loop: false, volume: 0.3 });
+        this.audioManager.addSound('wing_attack_sound', { loop: false, volume: 0.3 });
+        
+        this.audioManager.addSound('obtain_pokemon_sound', { loop: false, volume: 0.3 });
+        this.audioManager.addSound('recovery_sound', { loop: false, volume: 1 });
+        this.audioManager.addSound('door_sound', { loop: false, volume: 0.6 });
+
+        this.audioManager.playSound('titleMusic');
+    }
 
 
     MoveSea()
@@ -198,6 +238,11 @@ export default class Animaiton extends Phaser.Scene
 
     update()
     {
+        if(this.cursors.space.isDown)
+        {
+            this.scene.start('tittle', { from: this.scene.key });
+        }
+
         this.sky.body.setVelocityX(15);
         this.secondSky.body.setVelocityX(15);
 

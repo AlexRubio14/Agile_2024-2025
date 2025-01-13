@@ -17,6 +17,11 @@ export default class player extends Phaser.GameObjects.Sprite
         this.keyPressed = false;
         this.isInteracting = false;
 
+        let originalHeight = this.body.height;
+        this.body.setSize(this.body.width, originalHeight / 2);
+        this.body.setOffset(0, originalHeight / 2);
+        this.setDepth(5);
+
         const interactionDistance = 160;
     }
 

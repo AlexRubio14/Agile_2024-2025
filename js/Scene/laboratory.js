@@ -126,6 +126,7 @@ export default class Laboratory extends Phaser.Scene
 
     handleDoorCollision() {
         this.scene.start('city', { from: this.scene.key });
+        this.audioManager.playSound('door_sound');
     }
 
     playPokeballSound()

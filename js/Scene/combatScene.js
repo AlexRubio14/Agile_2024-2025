@@ -507,8 +507,8 @@ export default class combatScene extends Phaser.Scene
             this.scene.start('laboratory', { from: this.scene.key });
 
             this.audioManager.stopAll();
-            this.audioManager.playSound('cityMusic');
             this.audioManager.playSound('recovery_sound');
+            this.audioManager.playSound('cityMusic');
         }
     }
 }

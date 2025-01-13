@@ -20,6 +20,8 @@ export default class Forest extends Phaser.Scene
 
     create()
     {
+        this.cursors = this.input.keyboard.createCursorKeys();
+        
         this.sea = this.add.image(0,0,'forest').setOrigin(0);
         this.pikachu;
 
@@ -52,6 +54,14 @@ export default class Forest extends Phaser.Scene
             callbackScope: this,
             loop: true 
         });
+    }
+
+    update()
+    {
+        if(this.cursors.space.isDown)
+        {
+            this.scene.start('tittle', { from: this.scene.key });
+        }
     }
 
     setColliders()

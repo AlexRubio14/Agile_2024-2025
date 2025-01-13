@@ -22,6 +22,8 @@ export default class Starters extends Phaser.Scene
 
     create()
     {
+        this.cursors = this.input.keyboard.createCursorKeys();
+
         this.rectangle = this.add.rectangle(0, 0, this.scale.width, this.scale.height, 0xffffff).setOrigin(0).setAlpha(1);
 
         this.cinda = this.add.image(-10,50,'cinda').setOrigin(0).setVisible(false);
@@ -35,6 +37,14 @@ export default class Starters extends Phaser.Scene
         });
 
         this.LoadAnimation();
+    }
+
+    update()
+    {
+        if(this.cursors.space.isDown)
+        {
+            this.scene.start('tittle', { from: this.scene.key });
+        }
     }
 
     CharizardMovement()
